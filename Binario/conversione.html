@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decimale a Binario: Divisione Ripetuta</title>
+    
+    <style>
+        /* ------------------------------------------------ */
+        /* CSS (Stili) */
+        /* ------------------------------------------------ */
+        body {
+            font-family: 'Consolas', monospace;
+            background-color: #f7f9fc; /* Sfondo grigio/blu chiaro */
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0056b3; /* Blu scuro */
+            border-bottom: 3px solid #ffcc00; 
+            padding-bottom: 10px;
+            font-family: Arial, sans-serif;
+        }
+        
+        h2 {
+            color: #28a745;
+            margin-top: 30px;
+        }
+
+        /* Istruzioni e Input */
+        .input-area {
+            margin-bottom: 35px;
+            background-color: #e9f0f8;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #cceeff;
+        }
+
+        #number-input {
+            padding: 12px;
+            font-size: 1.3em;
+            width: 100px;
+            text-align: center;
+            border: 3px solid #0056b3;
+            border-radius: 6px;
+            margin-right: 15px;
+        }
+
+        #divide-btn {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            background-color: #007bff; 
+            color: white;
+            border: none;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+            font-family: Arial, sans-serif;
+        }
+        #divide-btn:hover { background-color: #0056b3; }
+
+        /* Area Output Risultato */
+        .result-area {
+            border: 2px solid #5a6268;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            background-color: #fcfcfc;
+        }
+
+        .step {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px dotted #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .calc-part {
+            font-size: 1.1em;
+            flex-grow: 1;
+        }
+
+        .resto {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #dc3545; /* Rosso acceso */
+            background-color: #ffe0e0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid #dc3545;
+        }
+        
+        .quoziente {
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .analogy {
+            font-style: italic;
+            color: #5a6268;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: block;
+            flex-basis: 30%; /* Spazio per l'analogia */
+            text-align: right;
+        }
+
+        /* Risultato Finale */
+        .final-result-box {
+            margin-top: 25px; 
+            padding: 20px; 
+            background-color: #d4edda; /* Verde chiaro */
+            border: 2px solid #28a745;
+            border-radius: 8px;
+        }
+        .final-binary {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #28a745;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💻 Metodo Ufficiale: Decimale -> Binario</h1>
+        
+        <p style="font-family: Arial, sans-serif; font-size: 1.1em;">
+            Usiamo la <b>Divisione Ripetuta per la Base (2)</b>. Il <b>resto</b> è il bit (0 o 1) del tuo codice!
+        </p>
+
+        <div class="input-area">
+            <label for="number-input" style="font-family: Arial, sans-serif;">Inserisci il Numero Decimale (N): </label>
+            <input type="number" id="number-input" min="1" max="255" value="25">
+            <button id="divide-btn" onclick="startDivision()">Calcola il Codice Binario (➡️)</button>
+        </div>
+
+        <h2>Registro dei Passaggi:</h2>
+        
+        <div class="result-area" id="result-output">
+            Inserisci un numero e premi "Calcola".
+        </div>
+
+    </div>
+
+    <script>
+        /* ------------------------------------------------ */
+        /* JAVASCRIPT (Logica) */
+        /* ------------------------------------------------ */
+
+        // Funzione per avviare il processo di divisione
+        function startDivision() {
+            let number = parseInt(document.getElementById('number-input').value);
+            const outputDiv = document.getElementById('result-output');
+            outputDiv.innerHTML = '';
+
+            if (isNaN(number) || number < 1 || number > 255) {
+                outputDiv.innerHTML = '<div style="color: red; font-family: Arial, sans-serif;">⚠️ Per favore, inserisci un numero valido (tra 1 e 255).</div>';
+                return;
+            }
+
+            outputDiv.innerHTML += `<h3>Inizio con N = ${number}</h3>`;
+            
+            // Esegui la divisione ripetuta
+            divideIteratively(number, outputDiv);
+        }
+
+        // Funzione che esegue la divisione ripetuta
+        function divideIteratively(currentNumber, outputDiv) {
+            let stepCounter = 1;
+            let finalBinary = "";
+            let originalNumber = currentNumber;
+
+            while (currentNumber >= 1) {
+                // Calcola il quoziente (risultato intero) e il resto
+                const quotient = Math.floor(currentNumber / 2);
+                const remainder = currentNumber % 2; 
+
+                // Analogia: Se il resto è 1, il numero è dispari. Se il resto è 0, è pari.
+                const analogyText = remainder === 1 
+                    ? "Numero DISPARI: Resta 1 (Bit Acceso 🟢)" 
+                    : "Numero PARI: Resta 0 (Bit Spento ⚪)";
+
+                // 1. Mostra il passo
+                const stepHtml = `
+                    <div class="step">
+                        <span class="calc-part">
+                            Passo ${stepCounter}: ${currentNumber} $\div$ 2 = <span class="quoziente">${quotient}</span>
+                            | Resto: <span class="resto">${remainder}</span>
+                        </span>
+                        <span class="analogy">${analogyText}</span>
+                    </div>
+                `;
+                outputDiv.innerHTML += stepHtml;
+                
+                // 2. Costruisci il codice binario (dal basso, il resto è il bit)
+                finalBinary = remainder + finalBinary;
+                
+                // 3. Prepara per il passo successivo: il nuovo numero da dividere è il quoziente
+                currentNumber = quotient;
+                stepCounter++;
+            }
+            
+            // 4. Aggiunge zeri iniziali se necessario (per un byte, 8 bit)
+            /*while (finalBinary.length < 8) {
+                finalBinary = "0" + finalBinary;
+            }*/
+
+            // 5. Mostra il risultato finale
+             outputDiv.innerHTML += `
+                <div class="final-result-box">
+                    <h3 style="font-family: Arial, sans-serif; color: #008080;">Risultato Finale:</h3>
+                    <p style="font-family: Arial, sans-serif; margin-bottom: 5px;">Leggendo i resti dal basso verso l'alto, il Codice Binario per ${originalNumber} è:</p>
+                    <p class="final-binary">${finalBinary}</p>
+                </div>
+            `;
+        }
+        
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', startDivision);
+    </script>
+</body>
+</html>
