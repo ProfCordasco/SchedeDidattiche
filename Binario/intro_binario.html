@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binario Facile - Per Studenti Speciali</title>
+    
+    <style>
+        /* ------------------------------------------------ */
+        /* CSS (Stili) */
+        /* ------------------------------------------------ */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff; /* Blu acceso */
+        }
+
+        h2 {
+            color: #28a745; /* Verde scuro */
+            margin-top: 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        /* Area degli Interruttori Binari */
+        #binary-board {
+            display: flex;
+            justify-content: center;
+            gap: 15px; /* Spazio tra i bit */
+            margin: 30px 0;
+        }
+
+        .bit-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #e9ecef;
+            border-radius: 8px;
+            padding: 10px;
+            width: 15%; /* Larghezza per 5 bit */
+        }
+
+        .power-label {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #007bff; /* Valore posizione */
+            margin-bottom: 10px;
+        }
+
+        /* Stile dell'Interruttore Cliccabile */
+        .bit-switch {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%; /* Tondo */
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background-color 0.1s ease;
+            border: 3px solid #6c757d;
+        }
+
+        .bit-switch.off {
+            background-color: #ccc; /* Grigio/Spento (0) */
+        }
+
+        .bit-switch.on {
+            background-color: #28a745; /* Verde brillante/Acceso (1) */
+            border-color: #218838;
+        }
+
+        .binary-label {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #6c757d; /* Colore base per 0 */
+        }
+
+        .bit-switch.on + .binary-label {
+            color: #28a745; /* Colore per 1 */
+        }
+
+        /* Area Risultato */
+        .result-box {
+            background-color: #ffeeba; /* Colore di evidenziazione (giallo chiaro) */
+            border: 2px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 8px;
+            font-size: 1.1em;
+        }
+
+        #decimal-output {
+            font-size: 2em;
+            font-weight: bold;
+            color: #dc3545; /* Rosso per il risultato finale */
+        }
+
+        #binary-output {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        /* Pulsante Reset */
+        #reset-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+
+        #reset-btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 Il Codice Segreto: Binario (1 e 0)</h1>
+        
+        <p><strong>ISTRUZIONI:</strong> Clicca sui cerchi per accenderli (1) o spegnerli (0). Osserva come cambia il numero decimale in basso!</p>
+
+        <h2>1. Regola: Le Posizioni Valgono! (I tuoi "Bit")</h2>
+
+        <div id="binary-board">
+            
+            <div class="bit-column" data-value="16">
+                <span class="power-label">16</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="8">
+                <span class="power-label">8</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="4">
+                <span class="power-label">4</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="2">
+                <span class="power-label">2</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="1">
+                <span class="power-label">1</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+        </div>
+
+        <div class="reset-button-area">
+            <button id="reset-btn" onclick="resetBoard()">Azzera tutto (🔄)</button>
+        </div>
+
+        <hr>
+
+        <h2>2. Risultato: Il Numero Decimale</h2>
+
+        <div class="result-box">
+            <p>Il codice binario attuale è: <strong id="binary-output">00000</strong></p>
+            <p>Il **numero totale** (decimale) è: <span id="decimal-output">0</span></p>
+        </div>
+
+    </div>
+
+    <script>
+        /* ------------------------------------------------ */
+        /* JAVASCRIPT (Logica) */
+        /* ------------------------------------------------ */
+
+        // Funzione per calcolare e aggiornare i risultati
+        function updateDecimal() {
+            let decimalSum = 0;
+            let binaryString = "";
+            
+            // Seleziona tutti gli interruttori (bit)
+            const bitColumns = document.querySelectorAll('.bit-column');
+            
+            // Itera su tutti i bit da sinistra a destra (dal valore più grande al più piccolo)
+            bitColumns.forEach(column => {
+                const value = parseInt(column.getAttribute('data-value')); // 16, 8, 4, 2, 1...
+                const switchElement = column.querySelector('.bit-switch');
+                const binaryLabel = column.querySelector('.binary-label');
+                
+                if (switchElement.classList.contains('on')) {
+                    // Se l'interruttore è "on" (acceso/1)
+                    decimalSum += value; // Aggiungi il valore posizionale
+                    binaryString += "1";
+                    binaryLabel.textContent = "1";
+                } else {
+                    // Se l'interruttore è "off" (spento/0)
+                    binaryString += "0";
+                    binaryLabel.textContent = "0";
+                }
+            });
+
+            // Aggiorna l'HTML con i risultati
+            document.getElementById('decimal-output').textContent = decimalSum;
+            document.getElementById('binary-output').textContent = binaryString;
+        }
+
+        // Funzione principale per attivare/disattivare l'interruttore
+        function toggleBit(element) {
+            // Cambia la classe 'on'/'off' sull'interruttore cliccato
+            element.classList.toggle('on');
+            element.classList.toggle('off');
+            
+            // Ricalcola il totale dopo il cambio di stato
+            updateDecimal();
+        }
+
+        // Funzione per azzerare tutto
+        function resetBoard() {
+            const allSwitches = document.querySelectorAll('.bit-switch');
+            allSwitches.forEach(sw => {
+                sw.classList.remove('on');
+                sw.classList.add('off');
+            });
+            // Ricalcola per mostrare 0 e 00000
+            updateDecimal();
+        }
+
+        // Inizializzazione: Assicurati che all'inizio sia 00000 e 0
+        document.addEventListener('DOMContentLoaded', updateDecimal);
+    </script>
+</body>
+</html>
