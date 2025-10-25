@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formati Multimediali: Bitmap, Vettoriale e Pixel Art</title>
+    
+    <style>
+        /* ------------------------------------------------ */
+        /* CSS (Stili) */
+        /* ------------------------------------------------ */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; 
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: left;
+        }
+
+        h1 {
+            color: #004c99; 
+            border-bottom: 4px solid #ffaa00;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h2 {
+            color: #17a2b8; 
+            margin-top: 30px;
+            border-left: 5px solid #17a2b8;
+            padding-left: 10px;
+        }
+        
+        h3 {
+             color: #007bff;
+             margin-top: 0;
+        }
+
+        p { margin-bottom: 15px; font-size: 1.05em; }
+
+        /* Stile Pannelli Interattivi (Zoom) */
+        .interactive-panel {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            gap: 20px;
+        }
+
+        .format-box {
+            background-color: #e6f7ff;
+            border: 2px solid #b3e5fc;
+            padding: 20px;
+            border-radius: 10px;
+            width: 48%;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+
+        .format-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contenuto Dinamico Zoom */
+        .content {
+            margin-top: 15px;
+            background-color: #ffffff;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            min-height: 100px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content strong {
+            color: #dc3545; 
+        }
+        
+        /* Stile di Zoom per Bitmap MIGLIORATO */
+        .bitmap-zoom-area {
+            width: 120px;
+            height: 120px;
+            margin: 10px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            border: 4px solid #dc3545;
+        }
+        .pixel {
+            width: 100%;
+            height: 100%;
+            background-color: #ffaa00;
+        }
+        .pixel:nth-child(5) {
+            background-color: black; /* Pixel centrale diverso */
+        }
+        .pixel:nth-child(4) {
+             background-color: black;
+        }
+
+        /* Stile Vettoriale */
+        .vectorial {
+            font-size: 5em;
+            color: #28a745; 
+            margin: 10px auto;
+            border: 5px solid #28a745;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+        
+        /* SEZIONE PIXEL ART */
+        .pixel-art-section {
+            background-color: #fffaf0;
+            border: 2px solid #ffcc66;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        #pixel-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            width: 256px; /* 8 * 32px */
+            height: 256px;
+            margin: 20px auto;
+            border: 3px solid #333;
+        }
+
+        .grid-cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ddd;
+            background-color: white;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+        
+        .color-palette {
+            margin-bottom: 20px;
+        }
+        .color-sample {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 3px solid transparent;
+        }
+        .color-sample.selected {
+            border-color: #dc3545;
+        }
+        
+        #pixel-btn-group button {
+            padding: 8px 15px;
+            margin: 0 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #pixel-btn-group button:last-child {
+            background-color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🖼️ Esplorando i Formati Digitali: Immagini e Video</h1>
+
+        <h2>1. Immagini: Bitmap (Raster) vs. Vettoriale</h2>
+        <p>Clicca sul pannello per vedere cosa succede quando **ingrandiamo molto** l'immagine!</p>
+
+        <div class="interactive-panel">
+            
+            <div class="format-box" onclick="toggleContent('bitmap')">
+                <h3>1. BITMAP (Raster)</h3>
+                <p><strong>Dato:</strong> Mappa di pixel (JPG, PNG, GIF).</p>
+                
+                <div class="content" id="bitmap-content">
+                    <p>Clicca per vedere l'effetto Zoom!</p>
+                </div>
+            </div>
+            
+            <div class="format-box" onclick="toggleContent('vector')">
+                <h3>2. VETTORIALE</h3>
+                <p><strong>Dato:</strong> Equazioni matematiche (SVG, AI, EPS).</p>
+                
+                <div class="content" id="vector-content">
+                    <p>Clicca per vedere l'effetto Zoom!</p>
+                </div>
+            </div>
+
+        </div>
+        
+        <hr>
+
+        <div class="pixel-art-section">
+            <h2>2. Esperienza Pratica: Cos'è un Pixel?</h2>
+            <p>Un'immagine Bitmap è fatta di una griglia di pixel. **Clicca sui quadratini** per colorarli e creare la tua immagine!</p>
+            
+            <div class="color-palette">
+                Colore Selezionato: 
+                <span class="color-sample selected" style="background-color: black;" data-color="black"></span>
+                <span class="color-sample" style="background-color: red;" data-color="red"></span>
+                <span class="color-sample" style="background-color: blue;" data-color="blue"></span>
+                <span class="color-sample" style="background-color: white;" data-color="white"></span>
+            </div>
+
+            <div id="pixel-grid">
+                </div>
+            
+            <div id="pixel-btn-group">
+                <button onclick="generateRandomPattern()">Genera Esempio Casuale 🎲</button>
+                <button onclick="clearGrid()">Azzera Griglia 🗑️</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>3. Video: Codice (Codec) e Scatola (Container)</h2>
+
+        <div class="video-explanation">
+            <h3>🎥 L'Analogia del Pacco Video</h3>
+            
+            <p>Un file video è come un pacco postale che contiene cose diverse al suo interno. Il nome del file (es. MP4, MKV) non ti dice tutto sul contenuto.</p>
+            
+            <ul>
+                <li><strong>LA SCATOLA (CONTAINER):</strong> È il formato del file: **.MP4**, **.AVI**, **.MKV**. Questa "scatola" tiene insieme traccia video, traccia audio e sottotitoli. È l'estensione che vedi sul desktop.</li>
+                <li><strong>IL CONTENUTO (CODEC):</strong> È il metodo (l'algoritmo matematico) usato per comprimere/decomprimere il video (**H.264**, **H.265**) e l'audio (**AAC**). Questo è il vero "codice" che determina la qualità e la dimensione del file.</li>
+            </ul>
+
+            <p style="text-align: center; margin-top: 20px;">
+                <strong>Clicca sui formati per vedere la loro "Scatola" (Container) tipica:</strong>
+            </p>
+            
+            <div class="interactive-panel">
+                <div class="format-box" onclick="showVideoDetails('mp4')">
+                    <h3>.MP4</h3>
+                </div>
+                <div class="format-box" onclick="showVideoDetails('avi')">
+                    <h3>.AVI</h3>
+                </div>
+                <div class="format-box" onclick="showVideoDetails('mkv')">
+                    <h3>.MKV</h3>
+                </div>
+            </div>
+            
+            <div class="content" id="video-detail-content" style="min-height: 120px; text-align: center;">
+                 Seleziona un formato sopra.
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        /* ------------------------------------------------ */
+        /* JAVASCRIPT (Logica) */
+        /* ------------------------------------------------ */
+        
+        let activeImage = null; 
+        let selectedColor = 'black'; // Colore iniziale per la pixel art
+
+        // =======================================================
+        // LOGICA SEZIONE 1: ZOOM BITMAP VS VETTORIALE
+        // =======================================================
+
+        function toggleContent(type) {
+            const bitmapContent = document.getElementById('bitmap-content');
+            const vectorContent = document.getElementById('vector-content');
+
+            // Funzione per resettare i box
+            const resetBoxes = () => {
+                bitmapContent.innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>';
+                vectorContent.innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>';
+                activeImage = null;
+            };
+
+            if (type === 'bitmap') {
+                if (activeImage === 'bitmap') {
+                    resetBoxes();
+                } else {
+                    // Esempio zoom Bitmap migliorato: mostra la scomposizione in 3x3 pixel
+                    bitmapContent.innerHTML = `
+                        <h4>ZOOM ESTREMO:</h4>
+                        <div class="bitmap-zoom-area">
+                            <div class="pixel" style="background-color: #ffaa00;"></div>
+                            <div class="pixel" style="background-color: black;"></div>
+                            <div class="pixel" style="background-color: #ffaa00;"></div>
+                            <div class="pixel" style="background-color: black;"></div>
+                            <div class="pixel" style="background-color: white;"></div>
+                            <div class="pixel" style="background-color: black;"></div>
+                            <div class="pixel" style="background-color: #ffaa00;"></div>
+                            <div class="pixel" style="background-color: black;"></div>
+                            <div class="pixel" style="background-color: #ffaa00;"></div>
+                        </div>
+                        <p>L'immagine **si sgrana** (pixelatura). Il computer non può inventare dati!</p>
+                    `;
+                    vectorContent.innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>'; 
+                    activeImage = 'bitmap';
+                }
+            } 
+            else if (type === 'vector') {
+                if (activeImage === 'vector') {
+                    resetBoxes();
+                } else {
+                    // Esempio zoom Vettoriale
+                    vectorContent.innerHTML = '<h4>ZOOM ESTREMO:</h4><div class="vectorial">⛶</div><p>L\'immagine **resta nitida**! Il computer ricalcola la formula matematica.</p>';
+                    bitmapContent.innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>'; 
+                    activeImage = 'vector';
+                }
+            }
+        }
+        
+        // =======================================================
+        // LOGICA SEZIONE 2: PIXEL ART INTERATTIVA
+        // =======================================================
+        
+        const gridElement = document.getElementById('pixel-grid');
+        const colors = ['black', 'red', 'blue', 'white']; // Colori disponibili
+
+        // Genera la griglia 8x8
+        function setupGrid() {
+            gridElement.innerHTML = '';
+            for (let i = 0; i < 64; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'grid-cell';
+                cell.dataset.index = i;
+                cell.style.backgroundColor = 'white';
+                cell.addEventListener('click', colorCell);
+                gridElement.appendChild(cell);
+            }
+            setupPalette();
+        }
+        
+        // Imposta la tavolozza dei colori e l'evento click
+        function setupPalette() {
+            const paletteSamples = document.querySelectorAll('.color-sample');
+            paletteSamples.forEach(sample => {
+                sample.addEventListener('click', (e) => {
+                    // Rimuove la selezione da tutti
+                    paletteSamples.forEach(s => s.classList.remove('selected'));
+                    
+                    // Imposta il nuovo colore selezionato
+                    e.target.classList.add('selected');
+                    selectedColor = e.target.dataset.color;
+                });
+            });
+        }
+
+        // Colorare la cella quando si clicca
+        function colorCell(event) {
+            event.target.style.backgroundColor = selectedColor;
+        }
+
+        // Funzione per generare un pattern casuale
+        function generateRandomPattern() {
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                // Sceglie casualmente tra black, red, blue, o white
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                cell.style.backgroundColor = randomColor;
+            });
+        }
+        
+        // Funzione per azzerare la griglia
+        function clearGrid() {
+            const cells = document.querySelectorAll('.grid-cell');
+            cells.forEach(cell => {
+                cell.style.backgroundColor = 'white';
+            });
+        }
+        
+        // =======================================================
+        // LOGICA SEZIONE 3: VIDEO (Mantenuta)
+        // =======================================================
+
+        function showVideoDetails(format) {
+            const videoDetailContent = document.getElementById('video-detail-content');
+            let content = '';
+
+            switch(format) {
+                case 'mp4':
+                    content = `
+                        <h3>.MP4 (MPEG-4 Part 14)</h3>
+                        <p><strong>PRO:</strong> Molto compatibile, standard web. Ottimo per streaming e uso generale.</p>
+                        <p><strong>CONTENUTI TIPICI:</strong> Video (H.264/H.265) + Audio (AAC). Buon bilanciamento.</p>
+                    `;
+                    break;
+                case 'avi':
+                    content = `
+                        <h3>.AVI (Audio Video Interleave)</h3>
+                        <p><strong>PRO:</strong> Formato storico (Microsoft), molto flessibile con i vecchi codec.</p>
+                        <p><strong>CONTRO:</strong> Spesso non supporta le funzionalità moderne (come i sottotitoli avanzati) e i file sono **molto grandi**.</p>
+                    `;
+                    break;
+                case 'mkv':
+                    content = `
+                        <h3>.MKV (Matroska)</h3>
+                        <p><strong>PRO:</strong> Flessibilità estrema! Può contenere video, 10 tracce audio, 5 di sottotitoli e capitoli.</p>
+                        <p><strong>CONTRO:</strong> Non è uno standard ufficiale come MP4; non tutti i lettori lo supportano allo stesso modo.</p>
+                    `;
+                    break;
+                default:
+                    content = 'Seleziona un formato sopra.';
+            }
+
+            videoDetailContent.innerHTML = content;
+        }
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', () => {
+             // Inizializza la griglia pixel
+             setupGrid();
+
+             // Inizializzazione stato base per le immagini zoom
+             toggleContent(null);
+             document.getElementById('bitmap-content').innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>';
+             document.getElementById('vector-content').innerHTML = '<p>Clicca per vedere l\'effetto Zoom!</p>';
+        });
+    </script>
+</body>
+</html>
