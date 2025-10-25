@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codice Binario - Scheda 1</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .page { margin: 0; }
+            .no-print { display: none; }
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto;
+            padding: 15mm;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 5px solid #2196F3;
+            padding-bottom: 15px;
+            background: linear-gradient(to bottom, #E3F2FD, white);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            color: #1976D2;
+            margin: 0 0 10px 0;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .header .subtitle {
+            color: #424242;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .instruction-box {
+            background: #FFF9C4;
+            border: 4px solid #F9A825;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .instruction-box h3 {
+            margin: 0 0 15px 0;
+            color: #F57F17;
+            font-size: 22px;
+        }
+        
+        .instruction-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 8px 0;
+            color: #424242;
+        }
+        
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #F5F5F5;
+            border: 4px solid #2196F3;
+            border-radius: 15px;
+        }
+        
+        .section h2 {
+            color: #1976D2;
+            margin: 0 0 15px 0;
+            font-size: 26px;
+            border-bottom: 3px solid #2196F3;
+            padding-bottom: 10px;
+        }
+        
+        .visual-rule {
+            background: white;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .visual-rule .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            background: #4CAF50;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .visual-rule .text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E7D32;
+            line-height: 1.6;
+        }
+        
+        .binary-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .binary-digit {
+            width: 70px;
+            height: 70px;
+            background: #2196F3;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            border-radius: 15px;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .lightbulb-visual {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .lightbulb {
+            text-align: center;
+            padding: 20px;
+            border: 4px solid #424242;
+            border-radius: 15px;
+            background: white;
+            min-width: 120px;
+        }
+        
+        .bulb-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        
+        .bulb-label {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .bulb-state {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .bulb-off {
+            background: #EEEEEE;
+        }
+        
+        .bulb-on {
+            background: #FFF9C4;
+        }
+        
+        .info-box {
+            background: #E8F5E9;
+            border: 4px solid #4CAF50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .info-box strong {
+            color: #2E7D32;
+            font-size: 18px;
+        }
+        
+        .info-box p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .exercise-box {
+            background: #F3E5F5;
+            border: 4px solid #9C27B0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .exercise-box h3 {
+            color: #7B1FA2;
+            font-size: 22px;
+            margin: 0 0 15px 0;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 15mm;
+            right: 15mm;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .print-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        
+        .print-button:hover {
+            background: #388E3C;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-container no-print">
+    <button class="print-button" onclick="window.print()">🖨️ STAMPA LA SCHEDA</button>
+</div>
+
+<div class="page">
+    <div class="header">
+        <h1>IL CODICE BINARIO</h1>
+        <div class="subtitle">SCHEDA 1: Le Due Cifre</div>
+    </div>
+    
+    <div class="instruction-box">
+        <h3>📋 COSA IMPARO OGGI</h3>
+        <p>✓ Il codice binario usa solo 2 cifre</p>
+        <p>✓ I computer parlano solo in binario</p>
+        <p>✓ 0 significa SPENTO e 1 significa ACCESO</p>
+    </div>
+    
+    <div class="section">
+        <h2>🔢 LE DUE CIFRE DEL BINARIO</h2>
+        <div class="binary-display">
+            <div class="binary-digit">0</div>
+            <div class="binary-digit">1</div>
+        </div>
+        <div style="text-align: center; font-size: 26px; font-weight: bold; margin: 30px 0; line-height: 2;">
+            <div style="color: #D32F2F;">0 = SPENTO ✖</div>
+            <div style="color: #388E3C;">1 = ACCESO ✓</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>💡 COME UN INTERRUTTORE DELLA LUCE</h2>
+        <div class="lightbulb-visual">
+            <div class="lightbulb bulb-off">
+                <div class="bulb-icon">💡</div>
+                <div class="bulb-label">0</div>
+                <div class="bulb-state" style="color: #D32F2F;">SPENTA</div>
+            </div>
+            <div class="lightbulb bulb-on">
+                <div class="bulb-icon">💡</div>
+                <div class="bulb-label">1</div>
+                <div class="bulb-state" style="color: #F57F17;">ACCESA</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <strong>RICORDA:</strong>
+            <p>I computer hanno milioni di interruttori piccolissimi. Ogni interruttore può essere solo SPENTO (0) o ACCESO (1).</p>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>✏️ ESERCIZIO: COLORA LE LAMPADINE</h2>
+        <div class="exercise-box">
+            <h3>ISTRUZIONI:</h3>
+            <div class="visual-rule">
+                <div class="number">1</div>
+                <div class="text">Se vedi il numero 1, colora la lampadina di GIALLO</div>
+            </div>
+            <div class="visual-rule">
+                <div class="number">2</div>
+                <div class="text">Se vedi il numero 0, lascia la lampadina BIANCA</div>
+            </div>
+            
+            <div class="lightbulb-visual" style="margin-top: 30px;">
+                <div class="lightbulb">
+                    <div class="bulb-icon">💡</div>
+                    <div class="bulb-label">1</div>
+                </div>
+                <div class="lightbulb">
+                    <div class="bulb-icon">💡</div>
+                    <div class="bulb-label">0</div>
+                </div>
+                <div class="lightbulb">
+                    <div class="bulb-icon">💡</div>
+                    <div class="bulb-label">1</div>
+                </div>
+                <div class="lightbulb">
+                    <div class="bulb-icon">💡</div>
+                    <div class="bulb-label">1</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Schede Didattiche - Il Codice Binario - Scheda 1
+    </div>
+</div>
+
+</body>
+</html>

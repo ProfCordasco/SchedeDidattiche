@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Codice Binario - Scheda 2</title>
+    <style>
+        @media print {
+            body { margin: 0; }
+            .page { margin: 0; }
+            .no-print { display: none; }
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .page {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto;
+            padding: 15mm;
+            box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 5px solid #2196F3;
+            padding-bottom: 15px;
+            background: linear-gradient(to bottom, #E3F2FD, white);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            color: #1976D2;
+            margin: 0 0 10px 0;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        
+        .header .subtitle {
+            color: #424242;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        
+        .instruction-box {
+            background: #FFF9C4;
+            border: 4px solid #F9A825;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .instruction-box h3 {
+            margin: 0 0 15px 0;
+            color: #F57F17;
+            font-size: 22px;
+        }
+        
+        .instruction-box p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 8px 0;
+            color: #424242;
+        }
+        
+        .section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #F5F5F5;
+            border: 4px solid #2196F3;
+            border-radius: 15px;
+        }
+        
+        .section h2 {
+            color: #1976D2;
+            margin: 0 0 15px 0;
+            font-size: 26px;
+            border-bottom: 3px solid #2196F3;
+            padding-bottom: 10px;
+        }
+        
+        .visual-rule {
+            background: white;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .visual-rule .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            background: #4CAF50;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .visual-rule .text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E7D32;
+            line-height: 1.6;
+        }
+        
+        .conversion-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 20px;
+        }
+        
+        .conversion-table th {
+            background: #1976D2;
+            color: white;
+            padding: 15px;
+            font-size: 20px;
+            border: 3px solid #1976D2;
+        }
+        
+        .conversion-table td {
+            border: 3px solid #2196F3;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .conversion-table tr:nth-child(even) {
+            background: #E3F2FD;
+        }
+        
+        .conversion-table tr:nth-child(odd) {
+            background: white;
+        }
+        
+        .info-box {
+            background: #E8F5E9;
+            border: 4px solid #4CAF50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .info-box strong {
+            color: #2E7D32;
+            font-size: 18px;
+        }
+        
+        .info-box p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        
+        .exercise-box {
+            background: #F3E5F5;
+            border: 4px solid #9C27B0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .exercise-box h3 {
+            color: #7B1FA2;
+            font-size: 22px;
+            margin: 0 0 15px 0;
+        }
+        
+        .exercise-item {
+            background: white;
+            border: 3px solid #9C27B0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .exercise-line {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .answer-box {
+            border: 3px solid #424242;
+            border-radius: 8px;
+            padding: 15px 40px;
+            min-width: 150px;
+            background: white;
+            min-height: 30px;
+        }
+        
+        .footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 15mm;
+            right: 15mm;
+            text-align: center;
+            color: #999;
+            font-size: 14px;
+            border-top: 2px solid #ddd;
+            padding-top: 10px;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .print-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
+            font-weight: bold;
+        }
+        
+        .print-button:hover {
+            background: #388E3C;
+        }
+    </style>
+</head>
+<body>
+
+<div class="button-container no-print">
+    <button class="print-button" onclick="window.print()">🖨️ STAMPA LA SCHEDA</button>
+</div>
+
+<div class="page">
+    <div class="header">
+        <h1>IL CODICE BINARIO</h1>
+        <div class="subtitle">SCHEDA 2: I Primi Numeri</div>
+    </div>
+    
+    <div class="instruction-box">
+        <h3>📋 COSA IMPARO OGGI</h3>
+        <p>✓ Come si scrivono i numeri da 0 a 7 in binario</p>
+        <p>✓ Come leggere la tabella di conversione</p>
+    </div>
+    
+    <div class="section">
+        <h2>📊 TABELLA DEI NUMERI</h2>
+        <div class="info-box">
+            <strong>COME USARE LA TABELLA:</strong>
+            <p>• Nella colonna di SINISTRA c'è il numero normale</p>
+            <p>• Nella colonna di DESTRA c'è lo stesso numero in BINARIO</p>
+        </div>
+        
+        <table class="conversion-table">
+            <tr>
+                <th>NUMERO NORMALE</th>
+                <th>NUMERO BINARIO</th>
+            </tr>
+            <tr>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>11</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>101</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>110</td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>111</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>✏️ ESERCIZIO: USA LA TABELLA</h2>
+        <div class="exercise-box">
+            <h3>ISTRUZIONI:</h3>
+            <div class="visual-rule">
+                <div class="number">1</div>
+                <div class="text">Guarda il numero normale</div>
+            </div>
+            <div class="visual-rule">
+                <div class="number">2</div>
+                <div class="text">Cerca il numero nella tabella</div>
+            </div>
+            <div class="visual-rule">
+                <div class="number">3</div>
+                <div class="text">Scrivi il numero binario nella casella</div>
+            </div>
+            
+            <div class="exercise-item">
+                <div class="exercise-line">
+                    <span>3 =</span>
+                    <div class="answer-box"></div>
+                </div>
+            </div>
+            
+            <div class="exercise-item">
+                <div class="exercise-line">
+                    <span>5 =</span>
+                    <div class="answer-box"></div>
+                </div>
+            </div>
+            
+            <div class="exercise-item">
+                <div class="exercise-line">
+                    <span>7 =</span>
+                    <div class="answer-box"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        Schede Didattiche - Il Codice Binario - Scheda 2
+    </div>
+</div>
+
+</body>
+</html>
