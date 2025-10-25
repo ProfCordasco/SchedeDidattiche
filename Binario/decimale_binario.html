@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decimale a Binario - Trova il Codice!</title>
+    
+    <style>
+        /* ------------------------------------------------ */
+        /* CSS (Stili) */
+        /* ------------------------------------------------ */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0fff0; /* Sfondo verde acqua chiaro */
+            color: #333;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            color: #008080; /* Verde petrolio */
+            border-bottom: 3px solid #ffaa00; 
+            padding-bottom: 10px;
+        }
+
+        /* Area Istruzioni e Obiettivo */
+        .challenge-box {
+            background-color: #e0f7fa; /* Azzurro chiaro */
+            border: 3px solid #00bcd4;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            font-size: 1.1em;
+        }
+        
+        #target-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #dc3545; /* Rosso per l'obiettivo */
+            margin: 10px;
+            display: inline-block;
+            background-color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        /* Area degli Interruttori Binari */
+        #binary-board {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+            margin: 40px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .bit-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            padding: 15px 10px;
+            width: 15%; 
+        }
+
+        .power-label {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #007bff; /* Valore posizione */
+            margin-bottom: 15px;
+        }
+
+        /* Stile dell'Interruttore Cliccabile */
+        .bit-switch {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%; 
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 4px solid #6c757d;
+        }
+
+        .bit-switch.off {
+            background-color: #ccc; 
+        }
+
+        .bit-switch.on {
+            background-color: #28a745; /* Verde brillante/Acceso (1) */
+            border-color: #218838;
+            transform: scale(1.1); 
+        }
+        
+        .binary-label {
+            font-size: 2em;
+            font-weight: bold;
+            color: #6c757d; 
+            margin-top: 10px;
+        }
+
+        .bit-switch.on + .binary-label {
+            color: #28a745; 
+        }
+
+        /* Area Risultato e Feedback */
+        .result-box {
+            background-color: #fff3cd; 
+            border: 3px solid #ffc107;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+
+        #current-decimal {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #0000ff; /* Blu per il risultato attuale */
+        }
+        
+        #feedback-message {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.4em;
+            min-height: 30px; /* Previene salti di layout */
+        }
+
+        .feedback-correct {
+            color: #28a745; /* Verde */
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .feedback-incorrect {
+            color: #dc3545; /* Rosso */
+        }
+
+        /* Pulsanti */
+        .button-group {
+            margin-top: 25px;
+        }
+        .button-group button {
+            padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+            margin: 0 10px;
+            transition: background-color 0.2s;
+        }
+        #reset-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        #new-challenge-btn {
+            background-color: #17a2b8; /* Azzurro */
+            color: white;
+        }
+        #reset-btn:hover { background-color: #5a6268; }
+        #new-challenge-btn:hover { background-color: #138496; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎯 Trova il Codice: Decimale - Binario</h1>
+        
+        <div class="challenge-box">
+            <p><strong>OBIETTIVO:</strong> Devi accendere i bit (mettere 1) per raggiungere esattamente il numero:</p>
+            <span id="target-number">?</span>
+            <p>(Usa le posizioni 16, 8, 4, 2, 1)</p>
+        </div>
+
+        <h2>Il tuo Codice Binario (I tuoi tentativi)</h2>
+
+        <div id="binary-board">
+            
+            <div class="bit-column" data-value="16">
+                <span class="power-label">16</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="8">
+                <span class="power-label">8</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="4">
+                <span class="power-label">4</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="2">
+                <span class="power-label">2</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+            
+            <div class="bit-column" data-value="1">
+                <span class="power-label">1</span>
+                <div class="bit-switch off" onclick="toggleBit(this)"></div>
+                <span class="binary-label">0</span>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <p>Totale Decimale Attuale: <span id="current-decimal">0</span></p>
+            <div id="feedback-message">Inizia la sfida!</div>
+            <p>Codice Binario Attuale: <strong id="binary-output">00000</strong></p>
+        </div>
+
+        <div class="button-group">
+            <button id="new-challenge-btn" onclick="startChallenge()">Nuova Sfida (⭐)</button>
+            <button id="reset-btn" onclick="resetBoard(false)">Azzera Interruttori (🔄)</button>
+        </div>
+
+    </div>
+
+    <script>
+        /* ------------------------------------------------ */
+        /* JAVASCRIPT (Logica del Gioco) */
+        /* ------------------------------------------------ */
+
+        let targetNumber = 0;
+        const maxNumber = 31; // 16+8+4+2+1
+
+        // 1. Funzione per calcolare il decimale attuale e dare feedback
+        function updateDecimal() {
+            let decimalSum = 0;
+            let binaryString = "";
+            
+            const bitColumns = document.querySelectorAll('.bit-column');
+            const feedbackMessage = document.getElementById('feedback-message');
+            
+            bitColumns.forEach(column => {
+                const value = parseInt(column.getAttribute('data-value'));
+                const switchElement = column.querySelector('.bit-switch');
+                const binaryLabel = column.querySelector('.binary-label');
+                
+                if (switchElement.classList.contains('on')) {
+                    decimalSum += value; 
+                    binaryString += "1";
+                    binaryLabel.textContent = "1";
+                } else {
+                    binaryString += "0";
+                    binaryLabel.textContent = "0";
+                }
+            });
+
+            // Aggiorna i risultati
+            document.getElementById('current-decimal').textContent = decimalSum;
+            document.getElementById('binary-output').textContent = binaryString;
+            
+            // Logica di feedback
+            if (decimalSum === targetNumber && targetNumber !== 0) {
+                feedbackMessage.textContent = "🥳 Complimenti! Codice Trovato!";
+                feedbackMessage.className = 'feedback-correct';
+            } else if (decimalSum > targetNumber && targetNumber !== 0) {
+                feedbackMessage.textContent = `Troppo alto! Devi togliere ${decimalSum - targetNumber}.`;
+                feedbackMessage.className = 'feedback-incorrect';
+            } else if (decimalSum < targetNumber && targetNumber !== 0) {
+                feedbackMessage.textContent = `Troppo basso! Ti mancano ${targetNumber - decimalSum}.`;
+                feedbackMessage.className = 'feedback-incorrect';
+            } else {
+                 feedbackMessage.textContent = 'Continua a provare!';
+                 feedbackMessage.className = 'feedback-incorrect';
+            }
+            
+             // Quando si azzera tutto
+             if (decimalSum === 0 && targetNumber !== 0) {
+                 feedbackMessage.textContent = 'Inizia la sfida!';
+                 feedbackMessage.className = '';
+             }
+        }
+
+        // 2. Funzione per attivare/disattivare l'interruttore (chiamata dall'HTML)
+        function toggleBit(element) {
+            // Se la sfida non è iniziata, non fare nulla (o avvisa)
+            if (targetNumber === 0) {
+                document.getElementById('feedback-message').textContent = 'Clicca "Nuova Sfida" per iniziare!';
+                return;
+            }
+            element.classList.toggle('on');
+            element.classList.toggle('off');
+            updateDecimal();
+        }
+
+        // 3. Funzione per azzerare solo gli interruttori
+        function resetBoard(startNew = false) {
+            const allSwitches = document.querySelectorAll('.bit-switch');
+            allSwitches.forEach(sw => {
+                sw.classList.remove('on');
+                sw.classList.add('off');
+            });
+            // Aggiorna la visualizzazione, ma non tocca l'obiettivo (a meno che non sia una nuova sfida)
+            updateDecimal();
+            if (!startNew) {
+                document.getElementById('feedback-message').textContent = 'Interruttori azzerati. Riprova!';
+                document.getElementById('feedback-message').className = 'feedback-incorrect';
+            }
+        }
+        
+        // 4. Funzione per iniziare una nuova sfida
+        function startChallenge() {
+            // Scegli un numero casuale (escluso lo 0)
+            targetNumber = Math.floor(Math.random() * maxNumber) + 1; 
+            
+            // Imposta il nuovo obiettivo
+            document.getElementById('target-number').textContent = targetNumber;
+            
+            // Azzera la griglia
+            resetBoard(true); 
+            
+            document.getElementById('feedback-message').textContent = `Nuovo obiettivo! Trova il codice binario per ${targetNumber}.`;
+            document.getElementById('feedback-message').className = '';
+        }
+
+        // 5. Inizializzazione all'apertura della pagina
+        document.addEventListener('DOMContentLoaded', () => {
+             // Inizialmente, la sfida è vuota
+             document.getElementById('target-number').textContent = '?';
+             targetNumber = 0;
+             resetBoard(true); // Pulisce gli switch
+             document.getElementById('feedback-message').textContent = 'Clicca "Nuova Sfida" per iniziare!';
+        });
+    </script>
+</body>
+</html>
