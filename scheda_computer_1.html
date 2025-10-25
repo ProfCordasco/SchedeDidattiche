@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheda 1 - Il Computer (Interattiva Avanzata)</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2196F3;
+            text-align: center;
+            font-size: 32px;
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .numero-scheda {
+            background: #2196F3;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .sezione {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 5px solid #2196F3;
+        }
+        .definizione {
+            background: #E3F2FD;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0;
+            border: 3px solid #2196F3;
+        }
+        .attivita {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #FF9800;
+            border-radius: 10px;
+        }
+        .attivita h3 {
+            color: #FF9800;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .facile {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+        .medio {
+            background: #FFF9C4;
+            color: #F57F17;
+        }
+        .difficile {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+        .computer-da-colorare {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            display: block;
+            border: 2px solid #333;
+            padding: 10px;
+            background: white;
+            cursor: pointer;
+        }
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .color-btn {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .color-btn.active {
+            border: 4px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .word-bank {
+            background: #FFF9C4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #FBC02D;
+            text-align: center;
+        }
+        .word-option {
+            display: inline-block;
+            background: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 2px solid #2196F3;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .word-option:hover {
+            background: #E3F2FD;
+            transform: translateY(-2px);
+        }
+        .word-option.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .drop-zone {
+            display: inline-block;
+            min-width: 200px;
+            min-height: 40px;
+            border-bottom: 3px solid #333;
+            margin: 0 10px;
+            padding: 5px 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .drop-zone.filled {
+            background: #C8E6C9;
+        }
+        .vf-item {
+            font-size: 20px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            border: 3px solid #ccc;
+        }
+        .vf-item.correct {
+            background: #C8E6C9;
+            border-left: 5px solid #4CAF50;
+        }
+        .vf-item.incorrect {
+            background: #FFCDD2;
+            border-left: 5px solid #F44336;
+        }
+        .vf-buttons {
+            display: inline-flex;
+            gap: 15px;
+            margin-left: 20px;
+        }
+        .vf-btn {
+            padding: 10px 25px;
+            border: 3px solid #333;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+        .vf-btn:hover {
+            transform: scale(1.05);
+        }
+        .vf-btn.selected {
+            background: #FFF9C4;
+            border-color: #FF9800;
+        }
+        .vf-btn.vero {
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+        .vf-btn.falso {
+            color: #F44336;
+            border-color: #F44336;
+        }
+        .memory-game {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .memory-card {
+            aspect-ratio: 1;
+            background: #2196F3;
+            border: 3px solid #1976D2;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .memory-card:hover {
+            transform: scale(1.05);
+        }
+        .memory-card.flipped {
+            background: white;
+        }
+        .memory-card.matched {
+            background: #C8E6C9;
+            border-color: #4CAF50;
+            cursor: default;
+        }
+        .memory-card .back {
+            display: block;
+        }
+        .memory-card .front {
+            display: none;
+        }
+        .memory-card.flipped .back {
+            display: none;
+        }
+        .memory-card.flipped .front {
+            display: block;
+        }
+        .puzzle-piece {
+            display: inline-block;
+            padding: 15px 25px;
+            margin: 5px;
+            background: #E3F2FD;
+            border: 3px solid #2196F3;
+            border-radius: 10px;
+            cursor: move;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .puzzle-piece:hover {
+            background: #BBDEFB;
+            transform: scale(1.05);
+        }
+        .puzzle-piece.placed {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .puzzle-slot {
+            display: inline-block;
+            min-width: 200px;
+            min-height: 60px;
+            margin: 10px;
+            padding: 15px;
+            border: 3px dashed #2196F3;
+            border-radius: 10px;
+            text-align: center;
+            background: #f9f9f9;
+        }
+        .puzzle-slot.filled {
+            background: #C8E6C9;
+            border-style: solid;
+            border-color: #4CAF50;
+        }
+        .quiz-option {
+            background: #f5f5f5;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 3px solid #ccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+        .quiz-option:hover {
+            background: #E3F2FD;
+            border-color: #2196F3;
+        }
+        .quiz-option.selected {
+            background: #FFF9C4;
+            border-color: #FF9800;
+        }
+        .quiz-option.correct {
+            background: #C8E6C9;
+            border-color: #4CAF50;
+        }
+        .quiz-option.incorrect {
+            background: #FFCDD2;
+            border-color: #F44336;
+        }
+        .feedback {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+        .feedback.success {
+            background: #C8E6C9;
+            color: #2E7D32;
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .feedback.error {
+            background: #FFCDD2;
+            color: #C62828;
+            display: block;
+            animation: shake 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .btn-check {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .btn-check:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .btn-reset {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .btn-reset:hover {
+            background: #F57C00;
+            transform: scale(1.05);
+        }
+        .button-group {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .timer {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #2196F3;
+            margin: 15px 0;
+        }
+        .score {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="numero-scheda">📋 Scheda 1</div>
+        <h1>🖥️ IL COMPUTER</h1>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress">0%</div>
+        </div>
+        
+        <div class="score" id="score">Punteggio: 0 / 6</div>
+        
+        <div class="sezione">
+            <h2 style="color: #2196F3;">Che cos'è il computer?</h2>
+            <div class="definizione">
+                Il COMPUTER è una macchina elettronica<br>
+                che ci aiuta a fare molte cose!
+            </div>
+        </div>
+
+        <div class="attivita">
+            <h3>🎨 GIOCO 1: Colora il computer <span class="difficulty-badge facile">FACILE</span></h3>
+            <p style="font-size: 18px;">Scegli un colore e clicca sulle parti del computer per colorarle!</p>
+            <div class="color-palette">
+                <div class="color-btn active" style="background: #FF6B6B;" data-color="#FF6B6B"></div>
+                <div class="color-btn" style="background: #4ECDC4;" data-color="#4ECDC4"></div>
+                <div class="color-btn" style="background: #FFE66D;" data-color="#FFE66D"></div>
+                <div class="color-btn" style="background: #95E1D3;" data-color="#95E1D3"></div>
+                <div class="color-btn" style="background: #F38181;" data-color="#F38181"></div>
+                <div class="color-btn" style="background: #AA96DA;" data-color="#AA96DA"></div>
+            </div>
+            <svg class="computer-da-colorare" id="computerSvg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                <rect class="colorable" x="30" y="20" width="140" height="100" fill="white" stroke="black" stroke-width="3"/>
+                <rect class="colorable" x="40" y="30" width="120" height="75" fill="#E3F2FD" stroke="black" stroke-width="2"/>
+                <rect class="colorable" x="85" y="120" width="30" height="15" fill="white" stroke="black" stroke-width="2"/>
+                <rect class="colorable" x="70" y="135" width="60" height="5" fill="white" stroke="black" stroke-width="2"/>
+                <rect class="colorable" x="20" y="150" width="160" height="25" fill="white" stroke="black" stroke-width="3" rx="3"/>
+            </svg>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetColoring()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🧩 GIOCO 2: Puzzle delle parole <span class="difficulty-badge facile">FACILE</span></h3>
+            <p style="font-size: 18px;">Trascina le parole negli spazi corretti (o clicca sulla parola e poi sullo spazio):</p>
+            <div class="word-bank">
+                <strong>Parole disponibili:</strong><br>
+                <span class="word-option" draggable="true" data-word="computer">computer</span>
+                <span class="word-option" draggable="true" data-word="elettronica">elettronica</span>
+                <span class="word-option" draggable="true" data-word="macchina">macchina</span>
+            </div>
+            <div style="font-size: 20px; line-height: 3;">
+                <p>1. Il computer è una <span class="drop-zone" data-answer="macchina"></span></p>
+                <p>2. Il computer è una macchina <span class="drop-zone" data-answer="elettronica"></span></p>
+                <p>3. Il <span class="drop-zone" data-answer="computer"></span> ci aiuta a fare molte cose</p>
+            </div>
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity2()">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity2()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>👍 GIOCO 3: Vero o Falso? <span class="difficulty-badge medio">MEDIO</span></h3>
+            <p style="font-size: 18px;">Per ogni affermazione, clicca su VERO o FALSO:</p>
+            
+            <div class="vf-item" data-correct="true">
+                <span style="display: inline-block; width: 50%;">Il computer è una macchina</span>
+                <div class="vf-buttons">
+                    <button class="vf-btn vero" onclick="selectVF(this, true)">✓ VERO</button>
+                    <button class="vf-btn falso" onclick="selectVF(this, false)">✗ FALSO</button>
+                </div>
+            </div>
+            
+            <div class="vf-item" data-correct="false">
+                <span style="display: inline-block; width: 50%;">Il computer è un animale</span>
+                <div class="vf-buttons">
+                    <button class="vf-btn vero" onclick="selectVF(this, true)">✓ VERO</button>
+                    <button class="vf-btn falso" onclick="selectVF(this, false)">✗ FALSO</button>
+                </div>
+            </div>
+            
+            <div class="vf-item" data-correct="true">
+                <span style="display: inline-block; width: 50%;">Il computer funziona con l'elettricità</span>
+                <div class="vf-buttons">
+                    <button class="vf-btn vero" onclick="selectVF(this, true)">✓ VERO</button>
+                    <button class="vf-btn falso" onclick="selectVF(this, false)">✗ FALSO</button>
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity3()">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity3()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🃏 GIOCO 4: Memory - Trova le coppie! <span class="difficulty-badge medio">MEDIO</span></h3>
+            <p style="font-size: 18px;">Clicca sulle carte per trovare le coppie uguali!</p>
+            <div class="timer" id="memoryTimer">Tempo: 0s</div>
+            <div class="memory-game" id="memoryGame"></div>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetMemory()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🎯 GIOCO 5: Sequenza logica <span class="difficulty-badge medio">MEDIO</span></h3>
+            <p style="font-size: 18px;">Metti in ordine i passaggi per accendere il computer:</p>
+            <div style="background: #FFF9C4; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                <strong>Trascina le tessere negli slot nell'ordine corretto (o clicca):</strong><br>
+                <div class="puzzle-piece" draggable="true" data-order="3">Aspetto che si avvii</div>
+                <div class="puzzle-piece" draggable="true" data-order="1">Premo il pulsante di accensione</div>
+                <div class="puzzle-piece" draggable="true" data-order="4">Il computer è pronto!</div>
+                <div class="puzzle-piece" draggable="true" data-order="2">Vedo le luci accendersi</div>
+            </div>
+            <div style="margin: 20px 0;">
+                <p style="font-weight: bold;">Ordine corretto:</p>
+                <div class="puzzle-slot" data-position="1">1°</div>
+                <div class="puzzle-slot" data-position="2">2°</div>
+                <div class="puzzle-slot" data-position="3">3°</div>
+                <div class="puzzle-slot" data-position="4">4°</div>
+            </div>
+            <div class="button-group">
+                <button class="btn-check" onclick="checkSequence()">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetSequence()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🧠 GIOCO 6: Quiz finale <span class="difficulty-badge difficile">DIFFICILE</span></h3>
+            <p style="font-size: 18px;">Rispondi a questa domanda:</p>
+            <p style="font-size: 20px; font-weight: bold; color: #2196F3;">
+                Quale di queste affermazioni descrive MEGLIO il computer?
+            </p>
+            <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                È un giocattolo che serve solo per divertirsi
+            </div>
+            <div class="quiz-option" onclick="selectQuizOption(this, true)">
+                È una macchina elettronica che aiuta le persone in molti compiti diversi
+            </div>
+            <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                È un robot che può muoversi da solo
+            </div>
+            <div class="quiz-option" onclick="selectQuizOption(this, false)">
+                È un telefono molto grande
+            </div>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetActivity6()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="sezione" style="background: #C8E6C9; border-left-color: #4CAF50;">
+            <h3 style="color: #2E7D32;">💡 Ricorda!</h3>
+            <p style="font-size: 20px; font-weight: bold; text-align: center;">
+                Il COMPUTER è una MACCHINA ELETTRONICA<br>
+                che ci AIUTA ogni giorno!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentColor = '#FF6B6B';
+        let completedActivities = 0;
+        let score = 0;
+        
+        // Memory game variables
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let memoryTimer = 0;
+        let memoryInterval;
+        
+        // Sequence game variables
+        let sequenceSlots = {};
+        
+        // Activity completion tracking
+        let activity2Completed = false;
+        let activity3Completed = false;
+        let activity5Completed = false;
+        let activity6Completed = false;
+        
+        // VF selections
+        let vfSelections = {};
+
+        // Update score
+        function updateScore() {
+            document.getElementById('score').textContent = `Punteggio: ${score} / 6`;
+        }
+
+        function updateProgress() {
+            const percentage = (completedActivities / 6) * 100;
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+        }
+
+        // Activity 1: Coloring
+        let coloredParts = new Set();
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentColor = this.dataset.color;
+            });
+        });
+
+        document.querySelectorAll('.colorable').forEach((element, index) => {
+            element.addEventListener('click', function() {
+                this.style.fill = currentColor;
+                coloredParts.add(index);
+                
+                if (coloredParts.size === 5 && completedActivities === 0) {
+                    completedActivities = 1;
+                    score++;
+                    updateScore();
+                    updateProgress();
+                    document.getElementById('feedback1').className = 'feedback success';
+                    document.getElementById('feedback1').textContent = '🎨 Ottimo! Hai colorato tutto il computer! +1 punto';
+                }
+            });
+        });
+
+        function resetColoring() {
+            document.querySelectorAll('.colorable').forEach(element => {
+                element.style.fill = 'white';
+            });
+            coloredParts.clear();
+            document.getElementById('feedback1').style.display = 'none';
+        }
+
+        // Activity 2: Drag and drop
+        let draggedWord = null;
+        
+        function setupWordOptions() {
+            document.querySelectorAll('.word-option').forEach(word => {
+                word.addEventListener('dragstart', function(e) {
+                    draggedWord = this;
+                    this.style.opacity = '0.5';
+                });
+                word.addEventListener('dragend', function() {
+                    this.style.opacity = '1';
+                });
+                word.addEventListener('click', function() {
+                    if (!this.classList.contains('used')) {
+                        document.querySelectorAll('.word-option').forEach(w => w.style.background = 'white');
+                        this.style.background = '#FFF9C4';
+                        draggedWord = this;
+                    }
+                });
+            });
+        }
+        
+        function setupDropZones() {
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.style.background = '#E3F2FD';
+                });
+                zone.addEventListener('dragleave', function() {
+                    if (!this.classList.contains('filled')) {
+                        this.style.background = '#f9f9f9';
+                    }
+                });
+                zone.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (draggedWord) {
+                        this.textContent = draggedWord.dataset.word;
+                        this.dataset.filled = draggedWord.dataset.word;
+                        this.classList.add('filled');
+                        this.style.background = '#f9f9f9';
+                        draggedWord.classList.add('used');
+                        draggedWord.style.background = 'white';
+                        draggedWord = null;
+                    }
+                });
+                zone.addEventListener('click', function() {
+                    if (draggedWord) {
+                        this.textContent = draggedWord.dataset.word;
+                        this.dataset.filled = draggedWord.dataset.word;
+                        this.classList.add('filled');
+                        draggedWord.classList.add('used');
+                        draggedWord.style.background = 'white';
+                        draggedWord = null;
+                    }
+                });
+            });
+        }
+        
+        setupWordOptions();
+        setupDropZones();
+
+        function checkActivity2() {
+            let allCorrect = true;
+            let allFilled = true;
+            
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                if (!zone.dataset.filled) {
+                    allFilled = false;
+                    return;
+                }
+                if (zone.dataset.filled !== zone.dataset.answer) {
+                    allCorrect = false;
+                }
+            });
+            
+            const feedback = document.getElementById('feedback2');
+            if (!allFilled) {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Riempi tutti gli spazi prima di verificare!';
+            } else if (allCorrect) {
+                feedback.className = 'feedback success';
+                feedback.textContent = '🎉 Perfetto! Tutte le parole sono al posto giusto! +1 punto';
+                if (!activity2Completed) {
+                    activity2Completed = true;
+                    if (completedActivities === 1) {
+                        completedActivities = 2;
+                        score++;
+                        updateScore();
+                        updateProgress();
+                    }
+                }
+            } else {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Alcune parole non sono corrette. Riprova!';
+            }
+			document.getElementById('feedback2').style.display = '';
+        }
+
+        function resetActivity2() {
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                zone.textContent = '';
+                zone.classList.remove('filled');
+                delete zone.dataset.filled;
+                zone.style.background = '#f9f9f9';
+            });
+            document.querySelectorAll('.word-option').forEach(word => {
+                word.classList.remove('used');
+                word.style.background = 'white';
+            });
+            draggedWord = null;
+            document.getElementById('feedback2').style.display = 'none';
+        }
+
+        // Activity 3: Vero/Falso
+        function selectVF(button, isTrue) {
+            const item = button.closest('.vf-item');
+            const buttons = item.querySelectorAll('.vf-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+            
+            const itemIndex = Array.from(document.querySelectorAll('.vf-item')).indexOf(item);
+            vfSelections[itemIndex] = isTrue;
+        }
+
+        function checkActivity3() {
+            let allCorrect = true;
+            let allAnswered = true;
+            
+            document.querySelectorAll('.vf-item').forEach((item, index) => {
+                const shouldBeTrue = item.dataset.correct === 'true';
+                const userAnswer = vfSelections[index];
+                
+                if (userAnswer === undefined) {
+                    allAnswered = false;
+                    return;
+                }
+                
+                if (userAnswer === shouldBeTrue) {
+                    item.classList.add('correct');
+                    item.classList.remove('incorrect');
+                } else {
+                    item.classList.add('incorrect');
+                    item.classList.remove('correct');
+                    allCorrect = false;
+                }
+            });
+            
+            const feedback = document.getElementById('feedback3');
+            if (!allAnswered) {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Rispondi a tutte le domande prima di verificare!';
+            } else if (allCorrect) {
+                feedback.className = 'feedback success';
+                feedback.textContent = '🌟 Eccellente! Tutte le risposte sono corrette! +1 punto';
+                if (!activity3Completed) {
+                    activity3Completed = true;
+                    if (completedActivities === 2) {
+                        completedActivities = 3;
+                        score++;
+                        updateScore();
+                        updateProgress();
+                    }
+                }
+            } else {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Alcune risposte non sono corrette. Riprova!';
+            }
+			document.getElementById('feedback3').style.display = '';
+        }
+
+        function resetActivity3() {
+            document.querySelectorAll('.vf-item').forEach(item => {
+                item.classList.remove('correct', 'incorrect');
+                item.querySelectorAll('.vf-btn').forEach(btn => btn.classList.remove('selected'));
+            });
+            vfSelections = {};
+            document.getElementById('feedback3').style.display = 'none';
+        }
+
+        // Activity 4: Memory game
+        function initMemory() {
+            const symbols = ['🖥️', '⌨️', '🖱️', '💾', '🖥️', '⌨️', '🖱️', '💾'];
+            memoryCards = symbols.sort(() => Math.random() - 0.5);
+            const game = document.getElementById('memoryGame');
+            game.innerHTML = '';
+            
+            memoryCards.forEach((symbol, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `
+                    <span class="back">?</span>
+                    <span class="front">${symbol}</span>
+                `;
+                card.onclick = () => flipCard(card, symbol, index);
+                game.appendChild(card);
+            });
+            
+            memoryTimer = 0;
+            matchedPairs = 0;
+            flippedCards = [];
+            clearInterval(memoryInterval);
+            memoryInterval = setInterval(() => {
+                memoryTimer++;
+                document.getElementById('memoryTimer').textContent = `Tempo: ${memoryTimer}s`;
+            }, 1000);
+        }
+
+        function flipCard(card, symbol, index) {
+            if (flippedCards.length === 2 || card.classList.contains('matched') || card.classList.contains('flipped')) {
+                return;
+            }
+            
+            card.classList.add('flipped');
+            flippedCards.push({card, symbol, index});
+            
+            if (flippedCards.length === 2) {
+                setTimeout(() => checkMatch(), 800);
+            }
+        }
+
+        function checkMatch() {
+            const [first, second] = flippedCards;
+            
+            if (first.symbol === second.symbol && first.index !== second.index) {
+                first.card.classList.add('matched');
+                second.card.classList.add('matched');
+                matchedPairs++;
+                
+                if (matchedPairs === 4) {
+                    clearInterval(memoryInterval);
+                    const feedback = document.getElementById('feedback4');
+                    feedback.className = 'feedback success';
+                    feedback.textContent = `🎉 Complimenti! Hai trovato tutte le coppie in ${memoryTimer} secondi! +1 punto`;
+                    if (completedActivities === 3) {
+                        completedActivities = 4;
+                        score++;
+                        updateScore();
+                        updateProgress();
+                    }
+                }
+            } else {
+                first.card.classList.remove('flipped');
+                second.card.classList.remove('flipped');
+            }
+            
+            flippedCards = [];
+        }
+
+        function resetMemory() {
+            initMemory();
+            document.getElementById('feedback4').style.display = 'none';
+        }
+
+        // Activity 5: Sequence puzzle
+        let draggedPiece = null;
+        let selectedPuzzlePiece = null;
+        
+        function setupPuzzlePieces() {
+            document.querySelectorAll('.puzzle-piece').forEach(piece => {
+                piece.addEventListener('dragstart', function(e) {
+                    if (!this.classList.contains('placed')) {
+                        draggedPiece = this;
+                        this.style.opacity = '0.5';
+                    }
+                });
+                piece.addEventListener('dragend', function() {
+                    this.style.opacity = '1';
+                });
+                piece.addEventListener('click', function() {
+                    if (!this.classList.contains('placed')) {
+                        document.querySelectorAll('.puzzle-piece').forEach(p => {
+                            p.style.background = '#E3F2FD';
+                            p.style.border = '3px solid #2196F3';
+                        });
+                        this.style.background = '#BBDEFB';
+                        this.style.border = '5px solid #FF9800';
+                        draggedPiece = this;
+                        selectedPuzzlePiece = this;
+                    }
+                });
+            });
+        }
+        
+        function setupPuzzleSlots() {
+            document.querySelectorAll('.puzzle-slot').forEach(slot => {
+                slot.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    if (!this.classList.contains('filled')) {
+                        this.style.background = '#E3F2FD';
+                    }
+                });
+                slot.addEventListener('dragleave', function() {
+                    if (!this.classList.contains('filled')) {
+                        this.style.background = '#f9f9f9';
+                    }
+                });
+                slot.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    if (draggedPiece) {
+                        const pieceText = draggedPiece.textContent;
+                        const pieceOrder = draggedPiece.dataset.order;
+                        
+                        this.textContent = pieceText;
+                        this.dataset.order = pieceOrder;
+                        this.classList.add('filled');
+                        this.style.background = '#f9f9f9';
+                        
+                        draggedPiece.classList.add('placed');
+                        draggedPiece.style.background = '#E3F2FD';
+                        draggedPiece.style.opacity = '0.3';
+                        draggedPiece = null;
+                        selectedPuzzlePiece = null;
+                    }
+                });
+                slot.addEventListener('click', function() {
+                    if (draggedPiece) {
+                        const pieceText = draggedPiece.textContent;
+                        const pieceOrder = draggedPiece.dataset.order;
+                        
+                        this.textContent = pieceText;
+                        this.dataset.order = pieceOrder;
+                        this.classList.add('filled');
+                        
+                        draggedPiece.classList.add('placed');
+                        draggedPiece.style.background = '#E3F2FD';
+                        draggedPiece.style.border = '3px solid #2196F3';
+                        draggedPiece.style.opacity = '0.3';
+                        draggedPiece = null;
+                        selectedPuzzlePiece = null;
+                    }
+                });
+            });
+        }
+        
+        setupPuzzlePieces();
+        setupPuzzleSlots();
+
+        function checkSequence() {
+            let allCorrect = true;
+            let allFilled = true;
+            
+            document.querySelectorAll('.puzzle-slot').forEach(slot => {
+                const position = slot.dataset.position;
+                const order = slot.dataset.order;
+                
+                if (!order) {
+                    allFilled = false;
+                    return;
+                }
+                
+                if (position !== order) {
+                    allCorrect = false;
+                }
+            });
+            
+            const feedback = document.getElementById('feedback5');
+            if (!allFilled) {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Completa tutti gli slot prima di verificare!';
+            } else if (allCorrect) {
+                feedback.className = 'feedback success';
+                feedback.textContent = '🎯 Perfetto! La sequenza è corretta! +1 punto';
+                if (!activity5Completed) {
+                    activity5Completed = true;
+                    if (completedActivities === 4) {
+                        completedActivities = 5;
+                        score++;
+                        updateScore();
+                        updateProgress();
+                    }
+                }
+            } else {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ La sequenza non è corretta. Riprova!';
+            }
+			document.getElementById('feedback5').style.display = '';
+        }
+
+        function resetSequence() {
+            document.querySelectorAll('.puzzle-slot').forEach(slot => {
+                slot.textContent = slot.dataset.position + '°';
+                slot.classList.remove('filled');
+                delete slot.dataset.order;
+                slot.style.background = '#f9f9f9';
+            });
+            document.querySelectorAll('.puzzle-piece').forEach(piece => {
+                piece.classList.remove('placed');
+                piece.style.background = '#E3F2FD';
+            });
+            draggedPiece = null;
+            document.getElementById('feedback5').style.display = 'none';
+        }
+
+        // Activity 6: Quiz
+        function selectQuizOption(element, isCorrect) {
+            if (activity6Completed) {
+                const feedback = document.getElementById('feedback6');
+                feedback.className = 'feedback success';
+                feedback.textContent = '✅ Hai già completato questo gioco! Clicca "Ricomincia" per riprovare.';
+                return;
+            }
+            
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            
+            setTimeout(() => {
+                const feedback = document.getElementById('feedback6');
+                
+                if (isCorrect) {
+                    element.classList.remove('selected');
+                    element.classList.add('correct');
+                    feedback.className = 'feedback success';
+                    feedback.textContent = '🏆 Esatto! Hai capito perfettamente cos\'è il computer! +1 punto';
+                    if (!activity6Completed) {
+                        activity6Completed = true;
+                        if (completedActivities === 5) {
+                            completedActivities = 6;
+                            score++;
+                            updateScore();
+                            updateProgress();
+                            
+                            setTimeout(() => {
+                                alert('🎉 COMPLIMENTI! Hai completato TUTTA la scheda 1 con un punteggio di ' + score + '/6! Sei stato bravissimo! 🌟');
+                            }, 1000);
+                        }
+                    }
+                } else {
+                    element.classList.remove('selected');
+                    element.classList.add('incorrect');
+                    feedback.className = 'feedback error';
+                    feedback.textContent = '❌ Non è la risposta giusta. Rileggi la definizione e riprova!';
+                    setTimeout(() => {
+                        element.classList.remove('incorrect');
+                    }, 2000);
+                }
+				
+				document.getElementById('feedback6').style.display = '';
+            }, 500);
+        }
+
+        function resetActivity6() {
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            document.getElementById('feedback6').style.display = 'none';
+        }
+
+        // Initialize memory game on load
+        initMemory();
+    </script>
+</body>
+</html>
