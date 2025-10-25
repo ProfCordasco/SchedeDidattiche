@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheda 2 - Usi del Computer (Interattiva)</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            font-size: 32px;
+            animation: bounceIn 0.6s ease-out;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .numero-scheda {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .sezione {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 5px solid #4CAF50;
+        }
+        .attivita {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #FF9800;
+            border-radius: 10px;
+        }
+        .attivita h3 {
+            color: #FF9800;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .difficulty-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .facile {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+        .medio {
+            background: #FFF9C4;
+            color: #F57F17;
+        }
+        .griglia-icone {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .carta-uso {
+            background: white;
+            border: 3px solid #4CAF50;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-height: 150px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .carta-uso:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+        .carta-uso.clicked {
+            background: #C8E6C9;
+            animation: pulse 0.5s;
+        }
+        .carta-uso .dettaglio {
+            display: none;
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .carta-uso.clicked .dettaglio {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .icona-attivita {
+            font-size: 50px;
+            margin: 10px 0;
+        }
+        .testo-uso {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 10px;
+        }
+        .matching-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            gap: 20px;
+        }
+        .matching-column {
+            flex: 1;
+        }
+        .matching-item {
+            background: #E8F5E9;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .matching-item:hover {
+            background: #C8E6C9;
+            transform: scale(1.05);
+        }
+        .matching-item.selected {
+            background: #FFF9C4;
+            border-color: #FF9800;
+        }
+        .matching-item.matched {
+            background: #C8E6C9;
+            border-color: #4CAF50;
+            opacity: 0.7;
+        }
+        .text-input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 3px solid #4CAF50;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+        }
+        .text-input:focus {
+            outline: none;
+            border-color: #FF9800;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.3);
+        }
+        .colorable-box {
+            border: 3px solid black;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px;
+            min-height: 100px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .colorable-box:hover {
+            transform: scale(1.02);
+        }
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.15);
+        }
+        .color-btn.active {
+            border: 5px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .feedback {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+        .feedback.success {
+            background: #C8E6C9;
+            color: #2E7D32;
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        .feedback.error {
+            background: #FFCDD2;
+            color: #C62828;
+            display: block;
+            animation: shake 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        .btn-check {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .btn-check:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+        .btn-reset {
+            background: #FF9800;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-block;
+            margin: 10px 5px;
+        }
+        .btn-reset:hover {
+            background: #F57C00;
+            transform: scale(1.05);
+        }
+        .button-group {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .score {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="numero-scheda">📋 Scheda 2</div>
+        <h1>✨ USI DEL COMPUTER</h1>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress">0%</div>
+        </div>
+        
+        <div class="score" id="score">Punteggio: 0 / 4</div>
+        
+        <div class="sezione">
+            <h2 style="color: #4CAF50;">A cosa serve il computer?</h2>
+            <p style="font-size: 20px; text-align: center; font-weight: bold;">
+                Il computer serve a fare TANTE cose diverse!<br>
+                Scopriamole insieme! 🎯
+            </p>
+        </div>
+
+        <div class="sezione">
+            <h3 style="color: #4CAF50;">Le cose che possiamo fare:</h3>
+            <p style="font-size: 18px; text-align: center; color: #666;">
+                Clicca su ogni carta per scoprire cosa puoi fare!
+            </p>
+            <div class="griglia-icone">
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">✍️</div>
+                    <div class="testo-uso">SCRIVERE<br>testi e lettere</div>
+                    <div class="dettaglio">Posso scrivere documenti, compiti, email e storie!</div>
+                </div>
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">🎨</div>
+                    <div class="testo-uso">DISEGNARE<br>immagini colorate</div>
+                    <div class="dettaglio">Posso creare disegni digitali e modificare foto!</div>
+                </div>
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">🎮</div>
+                    <div class="testo-uso">GIOCARE<br>con giochi divertenti</div>
+                    <div class="dettaglio">Ci sono tantissimi videogiochi educativi e di intrattenimento!</div>
+                </div>
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">📚</div>
+                    <div class="testo-uso">STUDIARE<br>e imparare cose nuove</div>
+                    <div class="dettaglio">Posso cercare informazioni, fare ricerche e seguire lezioni!</div>
+                </div>
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">🎵</div>
+                    <div class="testo-uso">ASCOLTARE<br>musica e suoni</div>
+                    <div class="dettaglio">Posso ascoltare le mie canzoni preferite e podcast!</div>
+                </div>
+                <div class="carta-uso" onclick="clickCard(this)">
+                    <div class="icona-attivita">📧</div>
+                    <div class="testo-uso">COMUNICARE<br>con gli amici</div>
+                    <div class="dettaglio">Posso inviare messaggi, videochiamare e fare videochiamate!</div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetCards()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🎨 ATTIVITÀ 1: Colora le attività <span class="difficulty-badge facile">FACILE</span></h3>
+            <p style="font-size: 18px;">Scegli un colore e clicca sui riquadri per colorarli!</p>
+            <div class="color-palette">
+                <div class="color-btn active" style="background: #FF6B6B;" data-color="#FF6B6B"></div>
+                <div class="color-btn" style="background: #4ECDC4;" data-color="#4ECDC4"></div>
+                <div class="color-btn" style="background: #FFE66D;" data-color="#FFE66D"></div>
+                <div class="color-btn" style="background: #95E1D3;" data-color="#95E1D3"></div>
+                <div class="color-btn" style="background: #AA96DA;" data-color="#AA96DA"></div>
+                <div class="color-btn" style="background: #FFA07A;" data-color="#FFA07A"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="colorable-box" style="background: white;">SCRIVERE</div>
+                <div class="colorable-box" style="background: white;">DISEGNARE</div>
+                <div class="colorable-box" style="background: white;">GIOCARE</div>
+                <div class="colorable-box" style="background: white;">STUDIARE</div>
+            </div>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetColoring()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🔗 ATTIVITÀ 2: Collega le attività <span class="difficulty-badge medio">MEDIO</span></h3>
+            <p style="font-size: 18px;">Clicca su un'icona a sinistra, poi clicca sulla parola corrispondente a destra!</p>
+            <div class="matching-container">
+                <div class="matching-column">
+                    <div class="matching-item" data-id="write" onclick="selectLeft(this)">✍️</div>
+                    <div class="matching-item" data-id="play" onclick="selectLeft(this)">🎮</div>
+                    <div class="matching-item" data-id="study" onclick="selectLeft(this)">📚</div>
+                </div>
+                <div class="matching-column">
+                    <div class="matching-item" data-id="play" onclick="selectRight(this)">Giocare</div>
+                    <div class="matching-item" data-id="write" onclick="selectRight(this)">Scrivere</div>
+                    <div class="matching-item" data-id="study" onclick="selectRight(this)">Studiare</div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-reset" onclick="resetMatching()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>✏️ ATTIVITÀ 3: Scrivi 3 cose che puoi fare <span class="difficulty-badge medio">MEDIO</span></h3>
+            <p style="font-size: 18px;">Con il computer posso fare queste cose:</p>
+            <p style="font-size: 16px; color: #666; font-style: italic;">
+                💡 Suggerimento: Pensa a cosa hai visto nelle carte sopra (scrivere, disegnare, giocare, studiare, ascoltare musica, comunicare)
+            </p>
+            <input type="text" class="text-input" id="input1" placeholder="1. Esempio: Scrivere lettere...">
+            <input type="text" class="text-input" id="input2" placeholder="2. Esempio: Disegnare immagini...">
+            <input type="text" class="text-input" id="input3" placeholder="3. Esempio: Giocare...">
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity3()">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity3()">🔄 Ricomincia</button>
+            </div>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="sezione" style="background: #C8E6C9; border-left-color: #4CAF50;">
+            <h3 style="color: #2E7D32;">💡 Ricorda!</h3>
+            <p style="font-size: 20px; font-weight: bold; text-align: center;">
+                Con il computer posso:<br>
+                SCRIVERE - DISEGNARE - GIOCARE<br>
+                STUDIARE - ASCOLTARE - COMUNICARE
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentColor = '#FF6B6B';
+        let completedActivities = 0;
+        let score = 0;
+        let clickedCards = 0;
+        let selectedLeft = null;
+        let matchedPairs = 0;
+        
+        // Activity completion tracking
+        let activity1Completed = false;
+        let activity2Completed = false;
+        let activity3Completed = false;
+        let activity4Completed = false;
+        
+        // Parole valide per la verifica
+        const validWords = [
+            'scrivere', 'scrivere testi', 'scrivere lettere', 'scrittura',
+            'disegnare', 'disegnare immagini', 'disegno', 'fare disegni',
+            'giocare', 'giocare ai videogiochi', 'giochi', 'videogiochi',
+            'studiare', 'imparare', 'studiare cose nuove', 'leggere',
+            'ascoltare', 'ascoltare musica', 'musica', 'sentire musica',
+            'comunicare', 'parlare', 'messaggi', 'email', 'chattare',
+            'guardare', 'video', 'film', 'vedere video',
+            'cercare', 'cercare informazioni', 'internet', 'navigare'
+        ];
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Punteggio: ${score} / 4`;
+        }
+
+        function updateProgress() {
+            const percentage = (completedActivities / 4) * 100;
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+        }
+
+        // Gestione click sulle carte
+        function clickCard(card) {
+            if (!card.classList.contains('clicked')) {
+                card.classList.add('clicked');
+                clickedCards++;
+                
+                if (clickedCards === 6 && !activity1Completed) {
+                    activity1Completed = true;
+                    completedActivities = 1;
+                    score++;
+                    updateScore();
+                    updateProgress();
+                    const feedback = document.getElementById('feedback1');
+                    feedback.style.display = '';
+                    feedback.className = 'feedback success';
+                    feedback.textContent = '🎉 Fantastico! Hai esplorato tutti gli usi del computer! +1 punto';
+                }
+            }
+        }
+
+        function resetCards() {
+            document.querySelectorAll('.carta-uso').forEach(card => {
+                card.classList.remove('clicked');
+            });
+            clickedCards = 0;
+            const feedback = document.getElementById('feedback1');
+            feedback.style.display = 'none';
+            feedback.className = 'feedback';
+        }
+
+        // Gestione palette colori
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentColor = this.dataset.color;
+            });
+        });
+
+        // Colorazione riquadri
+        let coloredBoxes = 0;
+        document.querySelectorAll('.colorable-box').forEach(box => {
+            box.addEventListener('click', function() {
+                const wasWhite = this.style.background === 'white' || this.style.background === '';
+                this.style.background = currentColor;
+                
+                if (wasWhite) {
+                    coloredBoxes++;
+                }
+                
+                if (coloredBoxes === 4 && !activity2Completed) {
+                    activity2Completed = true;
+                    completedActivities = 2;
+                    score++;
+                    updateScore();
+                    updateProgress();
+                    const feedback = document.getElementById('feedback2');
+                    feedback.style.display = '';
+                    feedback.className = 'feedback success';
+                    feedback.textContent = '🎨 Bravissimo! Hai colorato tutte le attività! +1 punto';
+                }
+            });
+        });
+
+        function resetColoring() {
+            document.querySelectorAll('.colorable-box').forEach(box => {
+                box.style.background = 'white';
+            });
+            coloredBoxes = 0;
+            const feedback = document.getElementById('feedback2');
+            feedback.style.display = 'none';
+            feedback.className = 'feedback';
+        }
+
+        // Matching game
+        function selectLeft(item) {
+            if (item.classList.contains('matched')) return;
+            
+            document.querySelectorAll('.matching-column:first-child .matching-item').forEach(i => {
+                i.classList.remove('selected');
+            });
+            item.classList.add('selected');
+            selectedLeft = item;
+        }
+
+        function selectRight(item) {
+            if (item.classList.contains('matched') || !selectedLeft) return;
+            
+            const feedback = document.getElementById('feedback3');
+            
+            if (selectedLeft.dataset.id === item.dataset.id) {
+                selectedLeft.classList.add('matched');
+                selectedLeft.classList.remove('selected');
+                item.classList.add('matched');
+                matchedPairs++;
+                
+                if (matchedPairs === 3 && !activity3Completed) {
+                    activity3Completed = true;
+                    completedActivities = 3;
+                    score++;
+                    updateScore();
+                    updateProgress();
+                    feedback.style.display = '';
+                    feedback.className = 'feedback success';
+                    feedback.textContent = '🌟 Perfetto! Hai collegato tutto correttamente! +1 punto';
+                }
+                selectedLeft = null;
+            } else {
+                feedback.style.display = '';
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Non corrisponde! Riprova!';
+                setTimeout(() => {
+                    feedback.style.display = 'none';
+                }, 2000);
+                selectedLeft.classList.remove('selected');
+                selectedLeft = null;
+            }
+        }
+
+        function resetMatching() {
+            document.querySelectorAll('.matching-item').forEach(item => {
+                item.classList.remove('matched', 'selected');
+            });
+            selectedLeft = null;
+            matchedPairs = 0;
+            const feedback = document.getElementById('feedback3');
+            feedback.style.display = 'none';
+            feedback.className = 'feedback';
+        }
+
+        // Verifica testi con validazione reale
+        function checkActivity3() {
+            const input1 = document.getElementById('input1').value.trim().toLowerCase();
+            const input2 = document.getElementById('input2').value.trim().toLowerCase();
+            const input3 = document.getElementById('input3').value.trim().toLowerCase();
+            
+            const feedback = document.getElementById('feedback4');
+            
+            // Controlla che tutti i campi siano compilati
+            if (!input1 || !input2 || !input3) {
+                feedback.style.display = '';
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Compila tutti e 3 i campi!';
+                return;
+            }
+            
+            // Verifica che ogni risposta contenga parole valide
+            const isValid1 = validWords.some(word => input1.includes(word));
+            const isValid2 = validWords.some(word => input2.includes(word));
+            const isValid3 = validWords.some(word => input3.includes(word));
+            
+            const validCount = (isValid1 ? 1 : 0) + (isValid2 ? 1 : 0) + (isValid3 ? 1 : 0);
+            
+            if (validCount === 3) {
+                feedback.style.display = '';
+                feedback.className = 'feedback success';
+                feedback.textContent = '✨ Ottimo lavoro! Hai scritto 3 cose corrette che puoi fare con il computer! +1 punto';
+                if (!activity4Completed) {
+                    activity4Completed = true;
+                    completedActivities = 4;
+                    score++;
+                    updateScore();
+                    updateProgress();
+                    
+                    setTimeout(() => {
+                        alert('🎉 COMPLIMENTI! Hai completato la Scheda 2! Punteggio: ' + score + '/4! 🌟');
+                    }, 1000);
+                }
+            } else if (validCount >= 2) {
+                feedback.style.display = '';
+                feedback.className = 'feedback error';
+                feedback.textContent = '⚠️ Hai ' + validCount + ' risposte corrette su 3. Ricontrolla! Pensa alle attività mostrate nelle carte (scrivere, disegnare, giocare, studiare, ascoltare, comunicare).';
+            } else {
+                feedback.style.display = '';
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Le risposte devono riguardare cose che si possono fare con il computer! Guarda le carte sopra per aiutarti: scrivere, disegnare, giocare, studiare, ascoltare musica, comunicare.';
+            }
+        }
+
+        function resetActivity3() {
+            document.getElementById('input1').value = '';
+            document.getElementById('input2').value = '';
+            document.getElementById('input3').value = '';
+            const feedback = document.getElementById('feedback4');
+            feedback.style.display = 'none';
+            feedback.className = 'feedback';
+        }
+    </script>
+</body>
+</html>
