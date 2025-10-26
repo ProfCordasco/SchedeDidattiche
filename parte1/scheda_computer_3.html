@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheda 3 - I Componenti (Interattiva)</title>
+    <style>
+        /* ------------------------------------------------ */
+        /* CSS (Stili) */
+        /* ------------------------------------------------ */
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #9C27B0;
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .numero-scheda {
+            background: #9C27B0;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .sezione {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 5px solid #9C27B0;
+        }
+        .componente-box {
+            background: white;
+            border: 3px solid #9C27B0;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .componente-box:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+        }
+        .componente-box.revealed {
+            background: #E1BEE7;
+        }
+        .componente-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .icona-componente {
+            font-size: 40px;
+            margin-right: 15px;
+        }
+        .nome-componente {
+            font-size: 24px;
+            font-weight: bold;
+            color: #9C27B0;
+        }
+        .descrizione-componente {
+            font-size: 18px;
+            margin-top: 10px;
+            padding-left: 55px;
+            display: none;
+        }
+        .componente-box.revealed .descrizione-componente {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .attivita {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #FF9800;
+            border-radius: 10px;
+        }
+        .attivita h3 {
+            color: #FF9800;
+            margin-top: 0;
+            font-size: 22px;
+        }
+        .griglia-componenti {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .componente-da-colorare {
+            border: 3px solid black;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .componente-da-colorare:hover {
+            transform: scale(1.05);
+        }
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.15);
+        }
+        .color-btn.active {
+            border: 4px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .letter-input {
+            width: 40px;
+            height: 40px;
+            font-size: 24px;
+            text-align: center;
+            border: 3px solid #9C27B0;
+            border-radius: 8px;
+            margin: 0 5px;
+            font-weight: bold;
+            text-transform: uppercase; /* Forza la maiuscola */
+        }
+        .letter-input:focus {
+            outline: none;
+            border-color: #FF9800;
+            background: #FFF9C4;
+        }
+        .word-puzzle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            font-size: 24px;
+        }
+        .matching-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .matching-row:hover {
+            background: #E1BEE7;
+        }
+        .matching-row.correct {
+            background: #C8E6C9;
+            border-left: 5px solid #4CAF50;
+            pointer-events: none; /* Disabilita il click/cambio dopo la correzione */
+        }
+        .match-select {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid #9C27B0;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .feedback {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+        .feedback.success {
+            background: #C8E6C9;
+            color: #2E7D32;
+            display: block;
+        }
+        .feedback.error {
+            background: #FFCDD2;
+            color: #C62828;
+            display: block;
+        }
+        .btn-check {
+            background: #9C27B0;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: block;
+            margin: 20px auto;
+        }
+        .btn-check:hover {
+            background: #7B1FA2;
+            transform: scale(1.05);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9C27B0, #CE93D8);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="numero-scheda">📋 Scheda 3</div>
+        <h1>🧩 I COMPONENTI DEL COMPUTER</h1>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress">0%</div>
+        </div>
+        
+        <div class="sezione">
+            <h2 style="color: #9C27B0;">Le parti del computer</h2>
+            <p style="font-size: 20px; text-align: center; font-weight: bold;">
+                Il computer è fatto di TANTE PARTI!<br>
+                Clicca su ogni componente per scoprire a cosa serve! 👇
+            </p>
+        </div>
+
+        <div class="componente-box" onclick="revealComponent(this)">
+            <div class="componente-header">
+                <div class="icona-componente">🖥️</div>
+                <div class="nome-componente">MONITOR (o SCHERMO)</div>
+            </div>
+            <div class="descrizione-componente">
+                È lo schermo dove vediamo le immagini, i video e tutto quello che facciamo.
+            </div>
+        </div>
+
+        <div class="componente-box" onclick="revealComponent(this)">
+            <div class="componente-header">
+                <div class="icona-componente">⌨️</div>
+                <div class="nome-componente">TASTIERA</div>
+            </div>
+            <div class="descrizione-componente">
+                Ha tanti tasti con lettere e numeri. Serve per scrivere.
+            </div>
+        </div>
+
+        <div class="componente-box" onclick="revealComponent(this)">
+            <div class="componente-header">
+                <div class="icona-componente">🖱️</div>
+                <div class="nome-componente">MOUSE</div>
+            </div>
+            <div class="descrizione-componente">
+                Lo muoviamo con la mano per cliccare e scegliere le cose sullo schermo.
+            </div>
+        </div>
+
+        <div class="componente-box" onclick="revealComponent(this)">
+            <div class="componente-header">
+                <div class="icona-componente">💾</div>
+                <div class="nome-componente">CASE (o UNITÀ CENTRALE)</div>
+            </div>
+            <div class="descrizione-componente">
+                È la "scatola" del computer, dove c'è il cervello che fa funzionare tutto.
+            </div>
+        </div>
+        <div class="feedback" id="feedback1"></div>
+
+        <div class="attivita">
+            <h3>🎨 ATTIVITÀ 1: Colora i componenti</h3>
+            <p style="font-size: 18px;">Scegli un colore e clicca su ogni componente per colorarlo!</p>
+            <div class="color-palette">
+                <div class="color-btn active" style="background: #FF6B6B;" data-color="#FF6B6B"></div>
+                <div class="color-btn" style="background: #4ECDC4;" data-color="#4ECDC4"></div>
+                <div class="color-btn" style="background: #FFE66D;" data-color="#FFE66D"></div>
+                <div class="color-btn" style="background: #95E1D3;" data-color="#95E1D3"></div>
+                <div class="color-btn" style="background: #AA96DA;" data-color="#AA96DA"></div>
+            </div>
+            <div class="griglia-componenti">
+                <div class="componente-da-colorare" style="background: white;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">MONITOR</div>
+                    <div style="font-size: 60px;">🖥️</div>
+                </div>
+                <div class="componente-da-colorare" style="background: white;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">TASTIERA</div>
+                    <div style="font-size: 60px;">⌨️</div>
+                </div>
+                <div class="componente-da-colorare" style="background: white;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">MOUSE</div>
+                    <div style="font-size: 60px;">🖱️</div>
+                </div>
+                <div class="componente-da-colorare" style="background: white;">
+                    <div style="font-weight: bold; margin-bottom: 10px;">CASE</div>
+                    <div style="font-size: 60px;">💾</div>
+                </div>
+            </div>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>✏️ ATTIVITÀ 2: Completa i nomi</h3>
+            <p style="font-size: 18px;">Scrivi le lettere mancanti per completare i nomi!</p>
+            
+            <div class="word-puzzle">
+                🖥️ M<input type="text" class="letter-input" maxlength="1" data-answer="O">
+                <input type="text" class="letter-input" maxlength="1" data-answer="N">I T
+                <input type="text" class="letter-input" maxlength="1" data-answer="O">
+                <input type="text" class="letter-input" maxlength="1" data-answer="R">
+            </div>
+            
+            <div class="word-puzzle">
+                ⌨️ T<input type="text" class="letter-input" maxlength="1" data-answer="A">S T
+                <input type="text" class="letter-input" maxlength="1" data-answer="I">
+                <input type="text" class="letter-input" maxlength="1" data-answer="E">R
+                <input type="text" class="letter-input" maxlength="1" data-answer="A">
+            </div>
+            
+            <div class="word-puzzle">
+                🖱️ M<input type="text" class="letter-input" maxlength="1" data-answer="O">
+                <input type="text" class="letter-input" maxlength="1" data-answer="U">S E
+            </div>
+            
+            <div class="word-puzzle">
+                💾 C<input type="text" class="letter-input" maxlength="1" data-answer="A">S E
+            </div>
+            
+            <button class="btn-check" onclick="checkActivity2()">Verifica ✓</button>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>🔗 ATTIVITÀ 3: Abbina la descrizione</h3>
+            <p style="font-size: 18px;">Scegli la funzione corretta per ogni componente:</p>
+            
+            <div class="matching-row" data-correct="vedere">
+                <span style="font-size: 20px; font-weight: bold;">MONITOR</span>
+                <select class="match-select" onchange="checkMatch(this)">
+                    <option value="">Scegli...</option>
+                    <option value="scrivere">Serve per scrivere</option>
+                    <option value="vedere">Serve per vedere</option>
+                    <option value="cervello">È il cervello del computer</option>
+                    <option value="cliccare">Serve per cliccare</option>
+                </select>
+            </div>
+            
+            <div class="matching-row" data-correct="scrivere">
+                <span style="font-size: 20px; font-weight: bold;">TASTIERA</span>
+                <select class="match-select" onchange="checkMatch(this)">
+                    <option value="">Scegli...</option>
+                    <option value="scrivere">Serve per scrivere</option>
+                    <option value="vedere">Serve per vedere</option>
+                    <option value="cervello">È il cervello del computer</option>
+                    <option value="cliccare">Serve per cliccare</option>
+                </select>
+            </div>
+            
+            <div class="matching-row" data-correct="cliccare">
+                <span style="font-size: 20px; font-weight: bold;">MOUSE</span>
+                <select class="match-select" onchange="checkMatch(this)">
+                    <option value="">Scegli...</option>
+                    <option value="scrivere">Serve per scrivere</option>
+                    <option value="vedere">Serve per vedere</option>
+                    <option value="cervello">È il cervello del computer</option>
+                    <option value="cliccare">Serve per cliccare</option>
+                </select>
+            </div>
+            
+            <div class="matching-row" data-correct="cervello">
+                <span style="font-size: 20px; font-weight: bold;">CASE</span>
+                <select class="match-select" onchange="checkMatch(this)">
+                    <option value="">Scegli...</option>
+                    <option value="scrivere">Serve per scrivere</option>
+                    <option value="vedere">Serve per vedere</option>
+                    <option value="cervello">È il cervello del computer</option>
+                    <option value="cliccare">Serve per cliccare</option>
+                </select>
+            </div>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="sezione" style="background: #E1BEE7; border-left-color: #9C27B0;">
+            <h3 style="color: #6A1B9A;">💡 Ricorda!</h3>
+            <p style="font-size: 18px; font-weight: bold; text-align: center;">
+                🖥️ MONITOR = vedo<br>
+                ⌨️ TASTIERA = scrivo<br>
+                🖱️ MOUSE = clicco<br>
+                💾 CASE = cervello
+            </p>
+        </div>
+    </div>
+
+    <script>
+        /* ------------------------------------------------ */
+        /* JAVASCRIPT (Logica) */
+        /* ------------------------------------------------ */
+        let currentColor = '#FF6B6B';
+        let completedActivities = 0; // Contatore del numero di attività completate (max 4)
+        
+        // Contatori specifici per l'attività 0 (Rivelazione)
+        let revealedComponents = 0;
+        const totalComponentsToReveal = 4; 
+        const ACTIVITY_REVEAL = 1;
+
+        // Contatori specifici per l'attività 1 (Colorazione)
+        let coloredComponents = 0;
+        const totalComponentsToColor = 4;
+        const ACTIVITY_COLOR = 2;
+
+        // Contatori specifici per l'attività 3 (Abbinamento)
+        let correctMatches = 0;
+        const totalMatches = 4;
+        const ACTIVITY_MATCH = 4; // Attività 3 (ultima)
+
+        // Funzione per rivelare le descrizioni (Attività 0: Introduzione)
+        function revealComponent(box) {
+            if (!box.classList.contains('revealed')) {
+                box.classList.add('revealed');
+                revealedComponents++;
+                
+                if (revealedComponents === totalComponentsToReveal) {
+                    if (completedActivities === 0) {
+                        completedActivities = 1; // 1/4 delle attività completate
+                        updateProgress();
+                    }
+                    document.getElementById('feedback1').className = 'feedback success';
+                    document.getElementById('feedback1').textContent = '🎉 Perfetto! Hai scoperto tutti i componenti!';
+                }
+            }
+        }
+
+        // Gestione palette colori (Attività 1)
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentColor = this.dataset.color;
+            });
+        });
+
+        // Colorazione componenti (Attività 1)
+        document.querySelectorAll('.componente-da-colorare').forEach(comp => {
+            comp.addEventListener('click', function() {
+                // Controlla se il componente era bianco prima di colorarlo
+                if (this.style.background === 'white' || this.style.background === '') {
+                    coloredComponents++;
+                }
+                this.style.background = currentColor;
+                
+                if (coloredComponents === totalComponentsToColor) {
+                    if (completedActivities < ACTIVITY_COLOR) {
+                        completedActivities = 2; // 2/4 delle attività completate
+                        updateProgress();
+                    }
+                    document.getElementById('feedback2').className = 'feedback success';
+                    document.getElementById('feedback2').textContent = '🎨 Bravissimo! Hai colorato tutti i componenti!';
+                }
+            });
+        });
+
+        // Auto-focus prossimo input (Attività 2)
+        document.querySelectorAll('.letter-input').forEach((input, index, inputs) => {
+            input.addEventListener('input', function() {
+                if (this.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+        });
+
+        // Verifica parole complete (Attività 2)
+        function checkActivity2() {
+            let allCorrect = true;
+            document.querySelectorAll('.letter-input').forEach(input => {
+                const userValue = input.value.toUpperCase();
+                const correctValue = input.dataset.answer;
+                
+                if (userValue !== correctValue) {
+                    allCorrect = false;
+                    input.style.background = '#FFCDD2';
+                } else {
+                    input.style.background = '#C8E6C9';
+                }
+            });
+            
+            const feedback = document.getElementById('feedback3');
+            if (allCorrect) {
+                feedback.className = 'feedback success';
+                feedback.textContent = '🌟 Eccellente! Tutte le parole sono corrette!';
+                if (completedActivities < 3) {
+                    completedActivities = 3; // 3/4 delle attività completate
+                    updateProgress();
+                }
+            } else {
+                feedback.className = 'feedback error';
+                feedback.textContent = '❌ Alcune lettere non sono corrette. Riprova!';
+            }
+        }
+
+        // Verifica abbinamenti (Attività 3)
+        function checkMatch(select) {
+            const row = select.closest('.matching-row');
+            const correct = row.dataset.correct;
+            
+            // Controlla solo se non è già corretto
+            if (select.value === correct && !row.classList.contains('correct')) {
+                row.classList.add('correct');
+                select.disabled = true;
+                correctMatches++;
+                
+                if (correctMatches === totalMatches) {
+                    if (completedActivities < ACTIVITY_MATCH) {
+                        completedActivities = 4; // 4/4 delle attività completate
+                        updateProgress();
+                    }
+                    document.getElementById('feedback4').className = 'feedback success';
+                    document.getElementById('feedback4').textContent = '🏆 Fantastico! Hai abbinato tutto correttamente!';
+                }
+            } else if (select.value !== correct && row.classList.contains('correct')) {
+                 // Questo caso non dovrebbe succedere con il select.disabled=true
+            } else if (select.value !== "" && select.value !== correct) {
+                // Feedback in caso di errore
+                document.getElementById('feedback4').className = 'feedback error';
+                document.getElementById('feedback4').textContent = `❌ L'abbinamento per ${row.querySelector('span').textContent} è sbagliato. Riprova!`;
+            } else if (select.value === "") {
+                 // Nasconde il feedback quando si torna a Scegli...
+                 document.getElementById('feedback4').style.display = 'none';
+                 
+                 // Se per errore si toglie un match corretto, decrementa il contatore
+                 if (row.classList.contains('correct')) {
+                     row.classList.remove('correct');
+                     select.disabled = false;
+                     correctMatches--;
+                     // La progressione non deve mai scendere sotto 3 se già raggiunta
+                     if (completedActivities === 4) completedActivities = 3;
+                     updateProgress();
+                 }
+            }
+        }
+
+        // Aggiornamento barra di progresso
+        function updateProgress() {
+            // Totale attività completate (max 4)
+            const totalTasks = 4; 
+            const percentage = (completedActivities / totalTasks) * 100;
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+        }
+        
+        // Inizializzazione (assicura che all'apertura sia 0%)
+        document.addEventListener('DOMContentLoaded', updateProgress);
+    </script>
+</body>
+</html>
