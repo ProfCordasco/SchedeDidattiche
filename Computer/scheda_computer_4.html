@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheda 4 - Riconosci i Componenti (Super Interattiva)</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Arial', sans-serif;
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #FF5722;
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 25px;
+        }
+        .numero-scheda {
+            background: #FF5722;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .sezione {
+            margin: 25px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            border-left: 5px solid #FF5722;
+        }
+        .attivita {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 3px solid #FF9800;
+            border-radius: 10px;
+        }
+        .attivita h3 {
+            color: #FF9800;
+            margin-top: 0;
+            font-size: 24px;
+        }
+        .griglia-riconoscimento, .griglia-associazione, .griglia-classificazione {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+        .carta-componente, .carta-associazione, .carta-classificazione {
+            border: 3px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            background: #FFEBEE;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .carta-componente:hover, .carta-associazione:hover, .carta-classificazione:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+        .carta-componente.selected, .carta-associazione.selected, .carta-classificazione.selected {
+            border-color: #00BCD4;
+            background: #E0F7FA;
+        }
+        .carta-componente.correct, .carta-associazione.correct, .carta-classificazione.correct {
+            background: #C8E6C9;
+            border-color: #4CAF50;
+        }
+        .carta-componente.incorrect, .carta-associazione.incorrect, .carta-classificazione.incorrect {
+            background: #FFCDD2;
+            border-color: #F44336;
+        }
+        .word-bank {
+            background: #FFF9C4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 2px solid #FBC02D;
+            text-align: center;
+        }
+        .word-option {
+            display: inline-block;
+            background: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 2px solid #FF5722;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .word-option:hover {
+            background: #FFCCBC;
+            transform: scale(1.05);
+        }
+        .text-input-name {
+            width: 90%;
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: 'Comic Sans MS', Arial, sans-serif;
+            text-align: center;
+        }
+        .feedback {
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+        .feedback.success {
+            background: #C8E6C9;
+            color: #2E7D32;
+            display: block;
+        }
+        .feedback.error {
+            background: #FFCDD2;
+            color: #C62828;
+            display: block;
+        }
+        .btn-check, .btn-reset {
+            padding: 10px 25px;
+            font-size: 18px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin: 10px 5px;
+            display: inline-block;
+        }
+        .btn-check {
+            background: #FF5722;
+            color: white;
+            border: none;
+        }
+        .btn-check:hover {
+            background: #E64A19;
+            transform: scale(1.05);
+        }
+        .btn-reset {
+            background: #9E9E9E;
+            color: white;
+            border: none;
+        }
+        .btn-reset:hover {
+            background: #757575;
+            transform: scale(1.05);
+        }
+        .button-group {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF5722, #FF9800);
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        .association-pair {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            border: 2px dashed #FF9800;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .association-pair-item {
+            padding: 10px;
+            border: 2px solid #00BCD4;
+            border-radius: 5px;
+            background: #E0F7FA;
+            min-width: 100px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .association-pair-item.selected {
+            background: #FFCCBC;
+            border-color: #FF5722;
+        }
+        .drop-target {
+            min-height: 40px;
+            min-width: 150px;
+            border: 2px dashed #795548;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #efebe9;
+            transition: border-color 0.3s;
+        }
+        .drop-target.filled {
+             border: 2px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="numero-scheda">📋 Scheda 4.1</div>
+        <h1>✨ RICONOSCI I COMPONENTI: LA SFIDA!</h1>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress">0%</div>
+        </div>
+        
+        <div class="sezione">
+            <h2 style="color: #FF5722;">Esercizi Super Interattivi</h2>
+            <p style="font-size: 20px; text-align: center; font-weight: bold;">
+                Metti alla prova la tua memoria e la tua abilità!
+            </p>
+        </div>
+
+        <div class="attivita">
+            <h3>🎨 ATTIVITÀ 1: Associa le figure!</h3>
+            <p style="font-size: 18px;">Clicca sul nome in alto, poi clicca sulla figura corretta in basso per assegnare il nome.</p>
+            
+            <div class="word-bank" id="wordBank1">
+                <span class="word-option" data-name="MONITOR" onclick="selectWord(this, 'MONITOR')">MONITOR</span>
+                <span class="word-option" data-name="TASTIERA" onclick="selectWord(this, 'TASTIERA')">TASTIERA</span>
+                <span class="word-option" data-name="MOUSE" onclick="selectWord(this, 'MOUSE')">MOUSE</span>
+                <span class="word-option" data-name="CASE" onclick="selectWord(this, 'CASE')">CASE</span>
+            </div>
+            
+            <div class="griglia-riconoscimento" id="activity1-cards">
+                <div class="carta-componente" data-component="MOUSE" onclick="assignName(this)">
+                    <p style="font-size: 14px; font-weight: bold; min-height: 20px;" class="assigned-name">?</p>
+                    <svg width="100%" height="70" viewBox="0 0 100 120">
+                        <ellipse cx="50" cy="55" rx="28" ry="38" fill="white" stroke="black" stroke-width="3"/>
+                        <line x1="50" y1="22" x2="50" y2="62" stroke="black" stroke-width="2"/>
+                        <circle cx="50" cy="32" r="6" fill="white" stroke="black" stroke-width="2"/>
+                    </svg>
+                </div>
+
+                <div class="carta-componente" data-component="CASE" onclick="assignName(this)">
+                    <p style="font-size: 14px; font-weight: bold; min-height: 20px;" class="assigned-name">?</p>
+                    <svg width="100%" height="70" viewBox="0 0 90 120">
+                        <rect x="15" y="15" width="60" height="90" fill="white" stroke="black" stroke-width="3"/>
+                        <circle cx="45" cy="35" r="10" fill="white" stroke="black" stroke-width="2"/>
+                        <rect x="25" y="55" width="40" height="5" fill="white" stroke="black" stroke-width="2"/>
+                        <rect x="25" y="80" width="40" height="18" fill="white" stroke="black" stroke-width="2"/>
+                    </svg>
+                </div>
+
+                <div class="carta-componente" data-component="MONITOR" onclick="assignName(this)">
+                    <p style="font-size: 14px; font-weight: bold; min-height: 20px;" class="assigned-name">?</p>
+                    <svg width="100%" height="70" viewBox="0 0 120 100">
+                        <rect x="10" y="10" width="100" height="65" fill="white" stroke="black" stroke-width="3"/>
+                        <rect x="18" y="18" width="84" height="50" fill="#E3F2FD" stroke="black" stroke-width="2"/>
+                        <rect x="45" y="75" width="30" height="10" fill="white" stroke="black" stroke-width="2"/>
+                        <rect x="35" y="85" width="50" height="5" fill="white" stroke="black" stroke-width="2"/>
+                    </svg>
+                </div>
+
+                <div class="carta-componente" data-component="TASTIERA" onclick="assignName(this)">
+                    <p style="font-size: 14px; font-weight: bold; min-height: 20px;" class="assigned-name">?</p>
+                    <svg width="100%" height="70" viewBox="0 0 140 80">
+                        <rect x="10" y="15" width="120" height="45" fill="white" stroke="black" stroke-width="3" rx="3"/>
+                        <rect x="15" y="20" width="10" height="8" fill="white" stroke="black" stroke-width="1.5"/>
+                        <rect x="28" y="20" width="10" height="8" fill="white" stroke="black" stroke-width="1.5"/>
+                        <rect x="41" y="20" width="10" height="8" fill="white" stroke="black" stroke-width="1.5"/>
+                        <rect x="15" y="32" width="50" height="8" fill="white" stroke="black" stroke-width="1.5"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity(1)">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity(1)">Reset ↺</button>
+            </div>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>💬 ATTIVITÀ 2: A cosa serve?</h3>
+            <p style="font-size: 18px;">Abbina l'azione al componente corretto cliccando prima sull'azione e poi sul componente.</p>
+            
+            <div style="display: flex; justify-content: space-around; gap: 20px; margin-bottom: 20px;">
+                <div id="funzione-bank">
+                    <div class="association-pair-item" data-match="SCRIVERE" onclick="selectAssociation(this, 'funzione')">SCRIVERE</div>
+                    <div class="association-pair-item" data-match="GUARDARE" onclick="selectAssociation(this, 'funzione')">GUARDARE</div>
+                    <div class="association-pair-item" data-match="PUNTARE" onclick="selectAssociation(this, 'funzione')">PUNTARE</div>
+                </div>
+                <div id="componente-bank">
+                    <div class="association-pair-item" data-match="TASTIERA" onclick="selectAssociation(this, 'componente')">TASTIERA</div>
+                    <div class="association-pair-item" data-match="MONITOR" onclick="selectAssociation(this, 'componente')">MONITOR</div>
+                    <div class="association-pair-item" data-match="MOUSE" onclick="selectAssociation(this, 'componente')">MOUSE</div>
+                </div>
+            </div>
+            
+            <div class="griglia-associazione" id="association-grid" style="grid-template-columns: 1fr;">
+                <p style="text-align: center; font-weight: bold;">Associazioni:</p>
+                <div class="association-pair">
+                    <div class="drop-target" data-target="SCRIVERE"></div>
+                    <div class="drop-target" data-target="TASTIERA"></div>
+                </div>
+                <div class="association-pair">
+                    <div class="drop-target" data-target="GUARDARE"></div>
+                    <div class="drop-target" data-target="MONITOR"></div>
+                </div>
+                <div class="association-pair">
+                    <div class="drop-target" data-target="PUNTARE"></div>
+                    <div class="drop-target" data-target="MOUSE"></div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity(2)">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity(2)">Reset ↺</button>
+            </div>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>⛔ ATTIVITÀ 3: Riconosci l'intruso!</h3>
+            <p style="font-size: 18px;">Quale di questi NON è un componente essenziale di un computer fisso? Clicca sull'intruso.</p>
+            
+            <div class="griglia-riconoscimento" id="activity3-cards" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="carta-componente" data-correct="false" onclick="selectCard(this, 3)">
+                    <p>TASTIERA</p>
+                </div>
+                <div class="carta-componente" data-correct="false" onclick="selectCard(this, 3)">
+                    <p>MONITOR</p>
+                </div>
+                <div class="carta-componente" data-correct="true" onclick="selectCard(this, 3)">
+                    <p>FORNELLO</p>
+                </div>
+                <div class="carta-componente" data-correct="false" onclick="selectCard(this, 3)">
+                    <p>MOUSE</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity(3)">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity(3)">Reset ↺</button>
+            </div>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="attivita">
+            <h3>➡️ ATTIVITÀ 4: Entra o Esci? (Input/Output)</h3>
+            <p style="font-size: 18px;">Clicca sul componente e poi scegli se serve per far **entrare** (INPUT) o **uscire** (OUTPUT) informazioni dal computer.</p>
+            
+            <div class="griglia-classificazione" id="activity4-cards">
+                <div class="carta-classificazione" data-component="MOUSE" data-category="INPUT" onclick="selectCard(this, 4)">
+                    <p>MOUSE</p>
+                    <div class="drop-target" data-target="4"></div>
+                </div>
+                <div class="carta-classificazione" data-component="TASTIERA" data-category="INPUT" onclick="selectCard(this, 4)">
+                    <p>TASTIERA</p>
+                    <div class="drop-target" data-target="4"></div>
+                </div>
+                <div class="carta-classificazione" data-component="MONITOR" data-category="OUTPUT" onclick="selectCard(this, 4)">
+                    <p>MONITOR</p>
+                    <div class="drop-target" data-target="4"></div>
+                </div>
+                <div class="carta-classificazione" data-component="CASSE" data-category="OUTPUT" onclick="selectCard(this, 4)">
+                    <p>CASSE AUDIO</p>
+                    <div class="drop-target" data-target="4"></div>
+                </div>
+            </div>
+            
+            <div class="word-bank" id="categoryBank">
+                <strong style="font-size: 18px;">Scegli la categoria:</strong><br>
+                <span class="word-option" data-category="INPUT" onclick="selectCategory(this, 'INPUT')">INPUT (Entra)</span>
+                <span class="word-option" data-category="OUTPUT" onclick="selectCategory(this, 'OUTPUT')">OUTPUT (Esci)</span>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-check" onclick="checkActivity(4)">Verifica ✓</button>
+                <button class="btn-reset" onclick="resetActivity(4)">Reset ↺</button>
+            </div>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="sezione" style="background: #FFCCBC; border-left-color: #FF5722;">
+            <h3 style="color: #D84315;">🚀 Obiettivo Raggiunto!</h3>
+            <p style="font-size: 18px; font-weight: bold; text-align: center;">
+                Bravissimo! Conosci tutti i componenti e le loro funzioni.
+                Ora sei un vero esperto di computer! 💻
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let completedActivities = 0;
+        const totalActivities = 4;
+        let selectedWordText = null; // Per Attività 1
+        let selectedAssociationItem = null; // Per Attività 2
+        let selectedCategory = null; // Per Attività 4
+        let selectedCard3 = null; // Per Attività 3
+        let selectedCard4 = null; // Per Attività 4
+
+        // Funzione comune per aggiornare la barra di progresso
+        function updateProgress() {
+            const percentage = (completedActivities / totalActivities) * 100;
+            const progressBar = document.getElementById('progress');
+            progressBar.style.width = percentage + '%';
+            progressBar.textContent = Math.round(percentage) + '%';
+        }
+        
+        // --- LOGICA ATTIVITÀ 1: Associa Immagine e Nome ---
+
+        function selectWord(element, word) {
+            document.querySelectorAll('#wordBank1 .word-option').forEach(opt => {
+                opt.style.background = 'white';
+                opt.classList.remove('selected');
+            });
+            
+            // Permette di deselezionare
+            if (selectedWordText === word) {
+                selectedWordText = null;
+            } else {
+                element.style.background = '#FFE0B2';
+                element.classList.add('selected');
+                selectedWordText = word;
+            }
+        }
+
+        function assignName(card) {
+            if (!selectedWordText) {
+                alert('Prima seleziona un nome!');
+                return;
+            }
+            
+            // Assegna il nome e aggiorna l'interfaccia
+            const assignedNameElement = card.querySelector('.assigned-name');
+            const wordOption = document.querySelector(`#wordBank1 .word-option[data-name="${selectedWordText}"]`);
+            
+            // Sblocca la parola precedentemente usata sulla carta (se presente)
+            const previousAssignment = card.dataset.assigned;
+            if (previousAssignment) {
+                const prevWordOption = document.querySelector(`#wordBank1 .word-option[data-name="${previousAssignment}"]`);
+                if (prevWordOption) prevWordOption.classList.remove('used');
+            }
+            
+            // Assegna il nuovo nome
+            assignedNameElement.textContent = selectedWordText;
+            card.dataset.assigned = selectedWordText;
+            
+            // Blocca la parola usata
+            wordOption.classList.add('used');
+            wordOption.style.background = 'white';
+            selectedWordText = null;
+            document.querySelectorAll('#wordBank1 .word-option').forEach(opt => opt.classList.remove('selected'));
+        }
+
+        function checkActivity(activityNumber) {
+            let allCorrect = true;
+            let feedbackElement = document.getElementById(`feedback${activityNumber}`);
+            
+            if (activityNumber === 1) {
+                // Controllo Attività 1
+                const cards = document.querySelectorAll('#activity1-cards .carta-componente');
+                cards.forEach(card => {
+                    const isCorrect = card.dataset.assigned === card.dataset.component;
+                    if (isCorrect) {
+                        card.classList.add('correct');
+                        card.classList.remove('incorrect');
+                    } else {
+                        card.classList.add('incorrect');
+                        card.classList.remove('correct');
+                        allCorrect = false;
+                    }
+                });
+                
+                if (Array.from(cards).some(card => !card.dataset.assigned)) {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ Completa tutti i componenti prima di verificare!';
+                    return;
+                }
+                
+                if (allCorrect) {
+                    feedbackElement.className = 'feedback success';
+                    feedbackElement.textContent = '🎉 Perfetto! Hai riconosciuto tutti i componenti!';
+                    if (completedActivities < 1) completedActivities = 1;
+                } else {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ Alcuni nomi non sono corretti. Riprova!';
+                }
+                
+            } else if (activityNumber === 2) {
+                // Controllo Attività 2 (Associazione)
+                const associationPairs = document.querySelectorAll('.association-pair');
+                
+                const correctPairs = {
+                    "SCRIVERE": "TASTIERA",
+                    "GUARDARE": "MONITOR",
+                    "PUNTARE": "MOUSE"
+                };
+                
+                let countCorrect = 0;
+                let allFilled = true;
+                
+                associationPairs.forEach(pair => {
+                    const funcTarget = pair.querySelector('.drop-target[data-target="SCRIVERE"], .drop-target[data-target="GUARDARE"], .drop-target[data-target="PUNTARE"]');
+                    const compTarget = pair.querySelector('.drop-target[data-target="TASTIERA"], .drop-target[data-target="MONITOR"], .drop-target[data-target="MOUSE"]');
+                    
+                    const func = funcTarget.textContent.trim();
+                    const comp = compTarget.textContent.trim();
+
+                    if (!func || !comp) {
+                        allFilled = false;
+                        allCorrect = false;
+                        return;
+                    }
+                    
+                    const isMatch = (correctPairs[func] === comp);
+                    
+                    if (isMatch) {
+                        funcTarget.style.borderColor = '#4CAF50';
+                        compTarget.style.borderColor = '#4CAF50';
+                        countCorrect++;
+                    } else {
+                        funcTarget.style.borderColor = '#F44336';
+                        compTarget.style.borderColor = '#F44336';
+                        allCorrect = false;
+                    }
+                });
+                
+                if (!allFilled) {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ Completa tutti gli abbinamenti prima di verificare!';
+                    return;
+                }
+                
+                if (allCorrect) {
+                    feedbackElement.className = 'feedback success';
+                    feedbackElement.textContent = `✅ Ottimo! Hai abbinato correttamente le funzioni!`;
+                    if (completedActivities < 2) completedActivities = 2;
+                } else {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = `❌ Hai ${countCorrect} abbinamenti corretti su ${associationPairs.length}. Riprova!`;
+                }
+
+            } else if (activityNumber === 3) {
+                // Controllo Attività 3 (Intruso)
+                const cards = document.querySelectorAll('#activity3-cards .carta-componente');
+                if (!selectedCard3) {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ Devi selezionare un componente prima di verificare!';
+                    return;
+                }
+
+                cards.forEach(card => {
+                    const isSelected = card.classList.contains('selected');
+                    const isCorrectAnswer = card.dataset.correct === 'true';
+
+                    if (isSelected && isCorrectAnswer) {
+                        card.classList.add('correct');
+                        feedbackElement.className = 'feedback success';
+                        feedbackElement.textContent = '🎉 Giusto! Il FORNELLO non serve al computer!';
+                        if (completedActivities < 3) completedActivities = 3;
+                    } else if (isSelected && !isCorrectAnswer) {
+                        card.classList.add('incorrect');
+                        feedbackElement.className = 'feedback error';
+                        feedbackElement.textContent = '❌ Sbagliato! Questo è un componente essenziale. Riprova!';
+                        allCorrect = false;
+                    } else if (!isSelected && isCorrectAnswer) {
+                         // Mostra la risposta corretta se l'utente ha sbagliato
+                         card.classList.add('correct');
+                    }
+                });
+            } else if (activityNumber === 4) {
+                // Controllo Attività 4 (Input/Output)
+                const cards = document.querySelectorAll('#activity4-cards .carta-classificazione');
+                let allFilled = true;
+                
+                cards.forEach(card => {
+                    const assignedCategory = card.dataset.assignedCategory;
+                    const correctCategory = card.dataset.category;
+                    const dropTarget = card.querySelector('.drop-target');
+
+                    if (!assignedCategory) {
+                        allFilled = false;
+                        allCorrect = false;
+                        return;
+                    }
+                    
+                    if (assignedCategory === correctCategory) {
+                        card.classList.add('correct');
+                        card.classList.remove('incorrect');
+                        dropTarget.style.backgroundColor = '#C8E6C9';
+                    } else {
+                        card.classList.add('incorrect');
+                        card.classList.remove('correct');
+                        dropTarget.style.backgroundColor = '#FFCDD2';
+                        allCorrect = false;
+                    }
+                });
+                
+                if (!allFilled) {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ Classifica tutti i componenti prima di verificare!';
+                    return;
+                }
+
+                if (allCorrect) {
+                    feedbackElement.className = 'feedback success';
+                    feedbackElement.textContent = '🌟 Perfetto! Hai classificato correttamente tutti i dispositivi I/O!';
+                    if (completedActivities < 4) completedActivities = 4;
+                } else {
+                    feedbackElement.className = 'feedback error';
+                    feedbackElement.textContent = '❌ C\'è qualche errore di classificazione. Ricorda: INPUT entra, OUTPUT esce!';
+                }
+            }
+            
+            updateProgress();
+        }
+
+        // Funzione di reset universale
+        function resetActivity(activityNumber) {
+            const feedbackElement = document.getElementById(`feedback${activityNumber}`);
+            feedbackElement.style.display = 'none';
+
+            if (activityNumber === 1) {
+                const cards = document.querySelectorAll('#activity1-cards .carta-componente');
+                cards.forEach(card => {
+                    card.classList.remove('correct', 'incorrect');
+                    card.querySelector('.assigned-name').textContent = '?';
+                    delete card.dataset.assigned;
+                });
+                document.querySelectorAll('#wordBank1 .word-option').forEach(opt => {
+                    opt.classList.remove('used', 'selected');
+                    opt.style.background = 'white';
+                });
+                selectedWordText = null;
+                if (completedActivities >= 1) completedActivities = 0; // Reset parziale
+            } else if (activityNumber === 2) {
+                // Reset Attività 2
+                document.querySelectorAll('#funzione-bank .association-pair-item, #componente-bank .association-pair-item').forEach(item => {
+                    item.classList.remove('selected', 'used');
+                    item.style.opacity = 1;
+                });
+                document.querySelectorAll('.drop-target').forEach(target => {
+                    target.textContent = '';
+                    target.style.borderColor = '#795548';
+                    target.classList.remove('filled');
+                });
+                selectedAssociationItem = null;
+                if (completedActivities >= 2) completedActivities = 1; // Reset parziale
+            } else if (activityNumber === 3) {
+                // Reset Attività 3
+                const cards = document.querySelectorAll('#activity3-cards .carta-componente');
+                cards.forEach(card => {
+                    card.classList.remove('selected', 'correct', 'incorrect');
+                });
+                selectedCard3 = null;
+                if (completedActivities >= 3) completedActivities = 2; // Reset parziale
+            } else if (activityNumber === 4) {
+                 // Reset Attività 4
+                const cards = document.querySelectorAll('#activity4-cards .carta-classificazione');
+                cards.forEach(card => {
+                    card.classList.remove('selected', 'correct', 'incorrect');
+                    delete card.dataset.assignedCategory;
+                    card.querySelector('.drop-target').textContent = '';
+                    card.querySelector('.drop-target').style.backgroundColor = '#efebe9';
+                    card.querySelector('.drop-target').classList.remove('filled');
+                });
+                document.querySelectorAll('#categoryBank .word-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                selectedCategory = null;
+                selectedCard4 = null;
+                if (completedActivities >= 4) completedActivities = 3; // Reset parziale
+            }
+            
+            updateProgress();
+        }
+
+        // --- LOGICA ATTIVITÀ 2: Che Cosa Fa? ---
+        function selectAssociation(element, type) {
+            if (element.classList.contains('used')) return;
+
+            // Deseleziona l'elemento precedente dello stesso tipo
+            document.querySelectorAll(`div[id$="-bank"] .association-pair-item[data-type="${type}"].selected`).forEach(item => {
+                item.classList.remove('selected');
+            });
+            
+            // Seleziona l'elemento corrente
+            element.classList.add('selected');
+            element.dataset.type = type; // Aggiunge un data-attributo per identificare il tipo
+            
+            if (selectedAssociationItem && selectedAssociationItem.dataset.type !== type) {
+                // Abbiamo un'associazione pronta: Funzione + Componente
+                const funcItem = type === 'funzione' ? element : selectedAssociationItem;
+                const compItem = type === 'componente' ? element : selectedAssociationItem;
+                
+                // Trova la coppia di drop-target che contengono le parole
+                const funcTarget = document.querySelector(`.drop-target[data-target="${funcItem.dataset.match}"]`);
+                const compTarget = document.querySelector(`.drop-target[data-target="${compItem.dataset.match}"]`);
+
+                if (funcTarget && compTarget) {
+                    // Esegue l'associazione
+                    funcTarget.textContent = funcItem.dataset.match;
+                    compTarget.textContent = compItem.dataset.match;
+                    funcTarget.classList.add('filled');
+                    compTarget.classList.add('filled');
+
+                    // Blocca e nascondi gli elementi usati
+                    funcItem.classList.add('used');
+                    compItem.classList.add('used');
+                    funcItem.style.opacity = 0.3;
+                    compItem.style.opacity = 0.3;
+                }
+                
+                // Reset la selezione
+                selectedAssociationItem.classList.remove('selected');
+                element.classList.remove('selected');
+                selectedAssociationItem = null;
+
+            } else {
+                // Salva l'elemento selezionato
+                if (selectedAssociationItem) selectedAssociationItem.classList.remove('selected');
+                selectedAssociationItem = element;
+            }
+        }
+
+        // --- LOGICA ATTIVITÀ 3 & 4: Scelta Singola e Classificazione ---
+        function selectCard(element, activityNumber) {
+            if (activityNumber === 3) {
+                // Logica Attività 3: Intruso
+                document.querySelectorAll('#activity3-cards .carta-componente').forEach(card => {
+                    card.classList.remove('selected', 'correct', 'incorrect');
+                });
+                element.classList.add('selected');
+                selectedCard3 = element;
+            } else if (activityNumber === 4) {
+                 // Logica Attività 4: Classificazione
+                 if (element.classList.contains('selected')) {
+                     element.classList.remove('selected');
+                     selectedCard4 = null;
+                 } else {
+                     document.querySelectorAll('#activity4-cards .carta-classificazione').forEach(card => card.classList.remove('selected'));
+                     element.classList.add('selected');
+                     selectedCard4 = element;
+                 }
+                 
+                 // Se c'è una categoria selezionata, assegnala subito
+                 if (selectedCard4 && selectedCategory) {
+                     assignCategory(selectedCard4, selectedCategory);
+                 }
+            }
+        }
+
+        // Logica Attività 4: Selezione Categoria
+        function selectCategory(element, category) {
+            document.querySelectorAll('#categoryBank .word-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedCategory = category;
+
+            // Se c'è una carta selezionata, assegna subito
+            if (selectedCard4) {
+                assignCategory(selectedCard4, category);
+            }
+        }
+
+        // Logica Attività 4: Assegna Categoria alla Carta
+        function assignCategory(card, category) {
+             const dropTarget = card.querySelector('.drop-target');
+             card.dataset.assignedCategory = category;
+             dropTarget.textContent = category;
+             dropTarget.classList.add('filled');
+             
+             // Deseleziona tutto dopo l'assegnazione
+             card.classList.remove('selected');
+             document.querySelectorAll('#categoryBank .word-option').forEach(opt => opt.classList.remove('selected'));
+             selectedCard4 = null;
+             selectedCategory = null;
+        }
+
+        // Inizializzazione per il progresso
+        updateProgress();
+    </script>
+</body>
+</html>
