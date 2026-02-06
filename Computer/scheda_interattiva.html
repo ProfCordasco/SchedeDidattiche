@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Mappa Interattiva Scheda Madre Acer</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f4f4f4; padding: 20px; }
+        .container { position: relative; display: inline-block; box-shadow: 0 0 20px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; }
+        img { display: block; max-width: 100%; height: auto; }
+        
+        /* Stile per i punti interattivi (hotspots) */
+        .hotspot {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 0, 0.6);
+            background: rgba(255, 255, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .hotspot:hover {
+            background: rgba(255, 255, 0, 0.5);
+            border-color: #fff;
+        }
+
+        /* Pannello informazioni */
+        #info-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            min-height: 80px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            border-left: 5px solid #007bff;
+        }
+        h2 { color: #333; margin-top: 0; }
+        p { color: #666; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+    <h1>Componenti Scheda Madre Acer</h1>
+    <p>Passa il mouse o clicca sui componenti evidenziati nell'immagine</p>
+
+    <div class="container">
+        <img src="scheda.jpg" alt="Scheda Madre Acer">
+
+        <div class="hotspot" style="top: 42%; left: 44%; width: 12%; height: 10%;" onclick="showInfo('CPU (Processore)', 'È il cuore pulsante del PC. Gestisce tutti i calcoli principali. Nota la mancanza di pasta termica: va riapplicata prima di rimontare il dissipatore.')"></div>
+        
+        <div class="hotspot" style="top: 45%; left: 19%; width: 10%; height: 8%;" onclick="showInfo('GPU (Chip Grafico)', 'Il chip dedicato alla gestione dei segnali video e del rendering 3D. Anche questo richiede pasta termica nuova.')"></div>
+        
+        <div class="hotspot" style="top: 57%; left: 35%; width: 33%; height: 18%;" onclick="showInfo('Memoria RAM', 'Qui è installato un modulo RAM DDR3. Lo slot sopra è vuoto, permettendoti di aggiungere un secondo banco per aumentare le prestazioni.')"></div>
+        
+        <div class="hotspot" style="top: 13%; left: 74%; width: 20%; height: 23%;" onclick="showInfo('Ventola di Raffreddamento', 'Espelle il calore dal sistema. Dalla foto si nota un accumulo di polvere: pulirla migliorerà la silenziosità e le temperature.')"></div>
+        
+        <div class="hotspot" style="top: 61%; left: 10%; width: 14%; height: 12%;" onclick="showInfo('Scheda Wi-Fi', 'Il modulo che gestisce la connessione wireless e il Bluetooth. È collegato tramite uno slot Mini PCIe.')"></div>
+        
+        <div class="hotspot" style="top: 64%; left: 25%; width: 7%; height: 8%;" onclick="showInfo('Batteria CMOS', 'Una piccola batteria a bottone che alimenta il chip del BIOS, mantenendo memorizzate data, ora e impostazioni di avvio.')"></div>
+    </div>
+
+    <div id="info-box">
+        <h2 id="info-title">Seleziona un componente</h2>
+        <p id="info-text">Clicca sulle aree evidenziate per leggere i dettagli tecnici.</p>
+    </div>
+
+    <script>
+        function showInfo(title, text) {
+            document.getElementById('info-title').innerText = title;
+            document.getElementById('info-text').innerText = text;
+            document.getElementById('info-box').style.borderColor = "#28a745";
+        }
+    </script>
+
+</body>
+</html>
