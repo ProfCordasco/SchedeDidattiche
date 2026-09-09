@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Network Investigation Lab</title>
+<style>
+:root{
+  --bg:#0b1220; --panel:#111b2e; --panel2:#16233b; --text:#eef4ff; --muted:#a9b7cf;
+  --accent:#5cc8ff; --accent2:#7cf0c6; --warn:#ffcc66; --danger:#ff7b7b; --line:#263755;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#08101d,#0d1728 45%,#0b1220);color:var(--text)}
+header{padding:56px 24px 34px;border-bottom:1px solid var(--line);background:radial-gradient(circle at 20% 0%,#15335b 0,#0b1220 45%)}
+.wrap{max-width:1180px;margin:auto}
+.badge{display:inline-block;padding:6px 10px;border:1px solid #31577d;border-radius:999px;color:var(--accent);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:clamp(2.2rem,5vw,4.2rem);margin:.45rem 0 .35rem}
+.subtitle{max-width:850px;color:var(--muted);font-size:1.12rem;line-height:1.6}
+nav{position:sticky;top:0;z-index:5;background:rgba(8,16,29,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:12px;overflow:auto;padding:10px 20px}
+nav a{color:#dbe7f8;text-decoration:none;padding:8px 12px;border-radius:8px;white-space:nowrap}
+nav a:hover{background:#15233a}
+main{padding:28px 20px 70px}
+section{max-width:1180px;margin:0 auto 34px}
+h2{font-size:1.8rem;margin:0 0 14px}
+h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:linear-gradient(180deg,var(--panel),#0e1828);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 10px 28px rgba(0,0,0,.18)}
+.card p,.card li{line-height:1.55;color:#d8e4f5}
+.card small,.muted{color:var(--muted)}
+.kicker{font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:700}
+.rule{border-left:4px solid var(--accent);padding-left:14px}
+.warning{border-left:4px solid var(--warn);padding-left:14px}
+.ticket{margin:18px 0;border:1px solid #2c4668;border-radius:18px;overflow:hidden;background:#0f1a2b}
+.ticket-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 20px;background:#14243b;border-bottom:1px solid var(--line)}
+.ticket-head h3{margin:0;font-size:1.15rem}
+.ticket-id{font-family:Consolas,monospace;color:var(--accent2)}
+.ticket-body{padding:20px}
+.ticket-body ol{padding-left:22px}
+.ticket-body li{margin:10px 0;line-height:1.55}
+.tools{margin-top:16px;padding:14px;border:1px dashed #385577;border-radius:12px;background:#0b1422}
+.prompt{font-family:Consolas,monospace;font-size:.92rem;color:#cfeaff;background:#07111f;border-radius:10px;padding:12px;display:block;white-space:pre-wrap}
+details{margin-top:14px}
+summary{cursor:pointer;color:var(--accent);font-weight:700}
+.randomizer{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+button{background:#1d79b7;color:white;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}
+button:hover{filter:brightness(1.08)}
+.result{font-size:1.15rem;font-weight:700;color:var(--accent2)}
+.table{width:100%;border-collapse:collapse;margin-top:12px}
+.table th,.table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+.table th{background:#15243a}
+.pill{display:inline-block;border-radius:999px;padding:4px 8px;font-size:.78rem;background:#18304d;color:#cfeaff}
+.exam{border:1px solid #6a4d1e;background:linear-gradient(180deg,#201a10,#14120e)}
+.exam h2,.exam h3{color:#ffe4a8}
+footer{border-top:1px solid var(--line);padding:28px 20px;color:var(--muted);text-align:center}
+@media(max-width:700px){.ticket-head{align-items:flex-start;flex-direction:column}.table{font-size:.9rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="badge">Classe terza · Informatica</span>
+    <h1>Network Investigation Lab</h1>
+    <p class="subtitle">Un'attività investigativa sulle reti e la comunicazione. Non basta ricordare le definizioni: dovrete analizzare casi, formulare ipotesi, verificare informazioni e difendere tecnicamente le vostre conclusioni.</p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#missione">Missione</a>
+    <a href="#metodo">Metodo</a>
+    <a href="#sorteggio">Sorteggio</a>
+    <a href="#ticket">Ticket</a>
+    <a href="#interrogazione">Interrogazione</a>
+    <a href="#criteri">Criteri</a>
+  </div>
+</nav>
+
+<main>
+<section id="missione">
+  <div class="grid">
+    <div class="card">
+      <div class="kicker">Scenario</div>
+      <h2>La missione</h2>
+      <p>Siete il team di supporto di una società che gestisce reti, servizi Internet e comunicazione digitale. Riceverete una serie di ticket. Ogni ticket contiene un problema reale o verosimile che va interpretato, non semplicemente “risolto a memoria”.</p>
+      <p class="rule"><strong>Obiettivo:</strong> arrivare a una risposta tecnicamente corretta e saperla spiegare usando il lessico specifico della disciplina.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Organizzazione</div>
+      <h2>Lavoro a gruppi</h2>
+      <p>La classe lavora in <strong>4 gruppi</strong>. Tutti i gruppi affrontano tutti i ticket. Per ogni ticket la docente sorteggia <strong>2 gruppi</strong> che dovranno esporre e difendere la soluzione.</p>
+      <p class="warning"><strong>Attenzione:</strong> non sapete in anticipo chi verrà chiamato. Ogni gruppo deve quindi essere pronto a spiegare ogni caso.</p>
+    </div>
+    <div class="card">
+      <div class="kicker">Strumento di indagine</div>
+      <h2>Uso di Gemini</h2>
+      <p>Durante questa attività potete utilizzare Gemini con l'account scolastico istituzionale per chiarire concetti, confrontare ipotesi e cercare esempi.</p>
+      <p><strong>Regola:</strong> una risposta dell'IA non è una prova. Dovete comprenderla, confrontarla con ciò che avete studiato e riformularla con parole vostre.</p>
+    </div>
+  </div>
+</section>
+
+<section id="metodo">
+  <div class="card">
+    <div class="kicker">Protocollo di lavoro</div>
+    <h2>Come affrontare ogni ticket</h2>
+    <table class="table">
+      <tr><th>Fase</th><th>Cosa fare</th></tr>
+      <tr><td>1. Analisi</td><td>Individuate dati, termini tecnici, anomalie e informazioni mancanti.</td></tr>
+      <tr><td>2. Ipotesi</td><td>Formulate una prima spiegazione senza usare subito Gemini.</td></tr>
+      <tr><td>3. Indagine</td><td>Usate Gemini per chiarire ciò che non è chiaro, chiedendo spiegazioni, confronti o esempi.</td></tr>
+      <tr><td>4. Verifica</td><td>Confrontate l'esito dell'indagine con il materiale studiato e con i concetti affrontati in classe.</td></tr>
+      <tr><td>5. Decisione</td><td>Scrivete una soluzione sintetica ma motivata.</td></tr>
+      <tr><td>6. Difesa</td><td>Preparate una spiegazione orale di circa 2 minuti. La docente potrà fare domande di approfondimento.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="sorteggio">
+  <div class="card">
+    <div class="kicker">Selezione dei gruppi</div>
+    <h2>Sorteggio esposizione</h2>
+    <p>Al termine di ogni ticket vengono sorteggiati due gruppi.</p>
+    <div class="randomizer">
+      <button onclick="drawGroups()">Sorteggia 2 gruppi</button>
+      <span id="result" class="result">—</span>
+    </div>
+  </div>
+</section>
+
+<section id="ticket">
+  <div class="kicker">Attività investigativa</div>
+  <h2>Ticket aperti</h2>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Nuova sede, rete da progettare</h3><span class="ticket-id">TICKET #01</span></div>
+    <div class="ticket-body">
+      <p>Una piccola azienda apre una sede con 18 postazioni, 2 stampanti di rete e un archivio comune di documenti. Il titolare propone di lasciare che ogni PC condivida direttamente cartelle e stampanti con gli altri, senza predisporre un computer dedicato alla gestione delle risorse.</p>
+      <ol>
+        <li>Quale modello organizzativo sta implicitamente proponendo il titolare?</li>
+        <li>Quale alternativa proporreste e perché potrebbe essere più adatta in questo caso?</li>
+        <li>Indicate almeno <strong>due vantaggi</strong> e <strong>uno svantaggio</strong> della soluzione scelta.</li>
+        <li>Classificate la rete in base alla scala dimensionale e motivate.</li>
+        <li>Spiegate che ruolo avrebbe l'indirizzo IP all'interno di questa rete.</li>
+      </ol>
+      <div class="tools"><strong>Indagine consigliata:</strong> cercate di capire non solo la differenza tra peer-to-peer e client-server, ma <em>quando</em> un modello diventa preferibile all'altro.</div>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Un indirizzo sospetto</h3><span class="ticket-id">TICKET #02</span></div>
+    <div class="ticket-body">
+      <p>Durante un test un tecnico apre il browser e digita <strong>127.0.0.1</strong>. Un collega afferma: “Stiamo contattando un server esterno attraverso Internet”.</p>
+      <ol>
+        <li>Valutate l'affermazione: corretta o errata?</li>
+        <li>Spiegate che cosa rappresenta 127.0.0.1.</li>
+        <li>Quale nome simbolico è normalmente associato a questo indirizzo?</li>
+        <li>Perché può essere utile a uno sviluppatore o a un tecnico di rete?</li>
+        <li>Che differenza c'è tra raggiungere 127.0.0.1 e raggiungere un host remoto?</li>
+      </ol>
+      <div class="tools"><strong>Indagine consigliata:</strong> approfondite i termini <em>loopback</em>, <em>localhost</em> e <em>interfaccia di rete</em>.</div>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>“Internet è rotto”</h3><span class="ticket-id">TICKET #03</span></div>
+    <div class="ticket-body">
+      <p>Un utente segnala: “Chrome non apre il sito aziendale. Quindi Internet non funziona”. In realtà la posta elettronica e la videoconferenza continuano a funzionare.</p>
+      <ol>
+        <li>Perché la conclusione dell'utente è troppo affrettata?</li>
+        <li>Distinguete chiaramente <strong>Internet</strong>, <strong>Web</strong>, <strong>sito Web</strong>, <strong>pagina Web</strong> e <strong>browser</strong>.</li>
+        <li>Quali elementi del caso suggeriscono che la connessione a Internet sia ancora attiva?</li>
+        <li>Formulate almeno due ipotesi plausibili sul motivo per cui il sito non si apre.</li>
+        <li>Spiegate che ruolo ha il browser nella visualizzazione di una pagina HTML.</li>
+      </ol>
+      <div class="tools"><strong>Indagine consigliata:</strong> chiedete a Gemini di confrontare Internet e WWW con esempi, poi riformulate il confronto senza usare metafore imprecise.</div>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Quale canale usare?</h3><span class="ticket-id">TICKET #04</span></div>
+    <div class="ticket-body">
+      <p>Un'azienda deve gestire quattro comunicazioni diverse:</p>
+      <p><span class="pill">A</span> inviare un documento con valore legale e prova di consegna ·
+      <span class="pill">B</span> discutere immediatamente con tre sedi remote ·
+      <span class="pill">C</span> inviare un messaggio che può essere letto in un secondo momento ·
+      <span class="pill">D</span> scambiare rapidamente brevi messaggi in tempo reale.</p>
+      <ol>
+        <li>Associate a ciascun caso lo strumento più appropriato tra PEC, e-mail, IM e videoconferenza/VoIP.</li>
+        <li>Indicate per ogni strumento se la comunicazione è sincrona o asincrona.</li>
+        <li>Spiegate perché una normale e-mail non equivale a una PEC.</li>
+        <li>Quale ruolo svolge un server in un servizio di instant messaging?</li>
+        <li>Perché il VoIP può essere considerato un servizio che utilizza Internet ma non coincide con il Web?</li>
+      </ol>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>IPv4 sotto pressione</h3><span class="ticket-id">TICKET #05</span></div>
+    <div class="ticket-body">
+      <p>Un responsabile sostiene: “Con IPv4 abbiamo tantissimi indirizzi, quindi non c'è alcun motivo tecnico per usare IPv6”.</p>
+      <ol>
+        <li>Spiegate come è strutturato un indirizzo IPv4 e quanti bit utilizza.</li>
+        <li>Perché il numero teorico di indirizzi IPv4 è limitato?</li>
+        <li>Spiegate in che modo IPv6 affronta questo limite.</li>
+        <li>Confrontate la rappresentazione di un indirizzo IPv4 con quella di un IPv6.</li>
+        <li>Valutate l'affermazione iniziale e formulate una risposta tecnica convincente.</li>
+      </ol>
+      <div class="tools"><strong>Indagine consigliata:</strong> non fermatevi al “128 bit contro 32 bit”: cercate di capire perché l'aumento dello spazio di indirizzamento è così rilevante.</div>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Tre sedi, tre scale diverse</h3><span class="ticket-id">TICKET #06</span></div>
+    <div class="ticket-body">
+      <p>Una società ha: una rete interna in un singolo edificio; più edifici collegati all'interno della stessa città; sedi operative distribuite tra Italia e Spagna.</p>
+      <ol>
+        <li>Classificate i tre casi in base alla scala dimensionale.</li>
+        <li>Spiegate perché la distanza influenza le tecnologie di collegamento utilizzate.</li>
+        <li>Una rete che copre una città è semplicemente “una LAN molto grande”? Motivate.</li>
+        <li>Internet può essere definita una singola rete geografica? Rispondete con attenzione.</li>
+      </ol>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Il motore di ricerca sa tutto?</h3><span class="ticket-id">TICKET #07</span></div>
+    <div class="ticket-body">
+      <p>Uno studente sostiene: “Google contiene tutte le pagine del Web. Quando cerco una parola, Google va in quel momento a leggere tutto Internet e mi restituisce i risultati”.</p>
+      <ol>
+        <li>Individuate almeno due errori concettuali nell'affermazione.</li>
+        <li>Spiegate in modo semplice che cosa significa che le pagine sono indicizzate.</li>
+        <li>Qual è la differenza tra un motore di ricerca e un browser?</li>
+        <li>Perché la scelta delle parole chiave influenza la qualità dei risultati?</li>
+        <li>Proponete due ricerche diverse per trovare informazioni precise sullo stesso argomento e spiegate quale sarebbe più efficace.</li>
+      </ol>
+    </div>
+  </article>
+
+  <article class="ticket">
+    <div class="ticket-head"><h3>Audit finale: ricostruire il sistema</h3><span class="ticket-id">TICKET #08 · FINAL CASE</span></div>
+    <div class="ticket-body">
+      <p>La società NetCore ha una sede a Bari con 25 PC e un server centrale, una seconda sede a Milano e collaboratori esterni. I dipendenti accedono a un sito aziendale, inviano documenti ufficiali tramite PEC, partecipano a riunioni in videoconferenza e usano un sistema di messaggistica istantanea. Ogni dispositivo collegato alla rete deve poter essere identificato.</p>
+      <ol>
+        <li>Disegnate uno schema logico dell'infrastruttura, distinguendo sede locale, collegamento tra sedi, client, server e accesso a Internet.</li>
+        <li>Indicate quali parti possono essere considerate LAN e quale collegamento assume dimensione geografica.</li>
+        <li>Spiegate dove compare il modello client-server nel caso descritto.</li>
+        <li>Inserite nel vostro schema il ruolo degli indirizzi IP.</li>
+        <li>Classificate PEC, messaggistica istantanea e videoconferenza come strumenti sincroni o asincroni.</li>
+        <li>Spiegate perché il sito aziendale appartiene al Web, mentre PEC e videoconferenza sono servizi che utilizzano Internet ma non sono “il Web”.</li>
+        <li>Preparate una spiegazione orale completa del sistema, come se doveste illustrarlo a un nuovo dipendente dell'azienda.</li>
+      </ol>
+      <div class="tools"><strong>Consegna:</strong> il gruppo deve essere in grado di difendere ogni scelta tecnica. Non è sufficiente uno schema corretto se non sapete spiegarlo.</div>
+    </div>
+  </article>
+</section>
+
+<section id="interrogazione">
+  <div class="card exam">
+    <div class="kicker">Valutazione individuale</div>
+    <h2>Come funzionerà l'interrogazione</h2>
+    <p>L'interrogazione sarà <strong>individuale, alla cattedra, senza Gemini e senza altri strumenti di IA</strong>.</p>
+    <p>Riceverete un <strong>ticket nuovo ma simile per struttura</strong> a quelli affrontati durante il laboratorio. Dovrete analizzarlo e spiegare oralmente la soluzione.</p>
+    <p>Il ticket non sostituisce la teoria: dopo il caso pratico, la docente farà anche <strong>domande teoriche sugli argomenti studiati</strong>.</p>
+    <table class="table">
+      <tr><th>Parte</th><th>Cosa viene richiesto</th></tr>
+      <tr><td>1. Caso pratico</td><td>Analizzare il ticket, individuare i concetti coinvolti e motivare la soluzione.</td></tr>
+      <tr><td>2. Collegamenti</td><td>Mettere in relazione il caso con altri argomenti: rete, IP, Internet/Web, servizi di comunicazione, client-server, scala dimensionale.</td></tr>
+      <tr><td>3. Teoria</td><td>Rispondere a domande di definizione, confronto e spiegazione sui contenuti affrontati.</td></tr>
+      <tr><td>4. Lessico tecnico</td><td>Usare correttamente termini e concetti specifici della disciplina.</td></tr>
+    </table>
+    <p class="warning"><strong>Importante:</strong> durante il laboratorio potete usare l'IA per indagare; durante l'interrogazione dovrete dimostrare di aver compreso ciò che avete investigato e di saperlo spiegare autonomamente.</p>
+  </div>
+</section>
+
+<section id="criteri">
+  <div class="card">
+    <div class="kicker">Cosa conta</div>
+    <h2>Criteri di qualità della risposta</h2>
+    <div class="grid">
+      <div>
+        <h3>Correttezza</h3>
+        <p>La soluzione deve essere tecnicamente valida.</p>
+      </div>
+      <div>
+        <h3>Motivazione</h3>
+        <p>Non basta scegliere: bisogna spiegare il perché.</p>
+      </div>
+      <div>
+        <h3>Collegamenti</h3>
+        <p>È importante saper mettere in relazione più concetti.</p>
+      </div>
+      <div>
+        <h3>Autonomia</h3>
+        <p>Le informazioni trovate con Gemini devono essere comprese e rielaborate.</p>
+      </div>
+      <div>
+        <h3>Lessico</h3>
+        <p>Usare in modo appropriato i termini tecnici.</p>
+      </div>
+      <div>
+        <h3>Esposizione</h3>
+        <p>Presentare la soluzione in modo chiaro, sintetico e ordinato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  Network Investigation Lab · Attività di consolidamento prima delle interrogazioni
+</footer>
+
+<script>
+function drawGroups(){
+  const groups=["Gruppo 1","Gruppo 2","Gruppo 3","Gruppo 4"];
+  for(let i=groups.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [groups[i],groups[j]]=[groups[j],groups[i]];
+  }
+  document.getElementById("result").textContent=groups[0]+" + "+groups[1];
+}
+</script>
+</body>
+</html>
