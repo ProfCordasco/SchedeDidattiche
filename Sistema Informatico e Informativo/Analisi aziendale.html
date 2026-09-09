@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business Systems Investigation</title>
+<style>
+:root{
+  --bg:#07111d;
+  --panel:#0e1b2a;
+  --line:#254a68;
+  --text:#eef7ff;
+  --muted:#b1c7d8;
+  --cyan:#58d6ff;
+  --green:#7ee7b5;
+  --yellow:#ffd166;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 0%,rgba(88,214,255,.12),transparent 26rem),
+    radial-gradient(circle at 90% 18%,rgba(126,231,181,.08),transparent 24rem),
+    var(--bg);
+  line-height:1.55;
+}
+header{
+  position:sticky;top:0;z-index:10;
+  background:rgba(7,17,29,.95);
+  border-bottom:1px solid rgba(88,214,255,.18);
+}
+nav{
+  max-width:1120px;margin:auto;padding:13px 18px;
+  display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+}
+.logo{font-weight:900;letter-spacing:.05em;margin-right:auto}
+.logo span{color:var(--cyan)}
+nav a{color:var(--muted);text-decoration:none;font-size:.92rem}
+main{max-width:1120px;margin:auto;padding:38px 18px 70px}
+.hero{
+  min-height:48vh;display:flex;align-items:center;justify-content:center;text-align:center
+}
+.hero-inner{max-width:860px}
+.tag{
+  display:inline-block;border:1px solid var(--line);border-radius:999px;
+  padding:6px 11px;color:var(--green);font-size:.8rem;letter-spacing:.09em
+}
+h1{font-size:clamp(2.5rem,6vw,4.8rem);line-height:1;margin:18px 0 14px}
+.hero p{font-size:1.13rem;color:var(--muted);max-width:760px;margin:auto}
+.card{
+  background:linear-gradient(180deg,rgba(17,37,57,.97),rgba(10,25,39,.98));
+  border:1px solid rgba(88,214,255,.18);
+  border-radius:17px;padding:24px;margin:24px 0;
+  box-shadow:0 16px 40px rgba(0,0,0,.22)
+}
+.head{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.num{
+  min-width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+  border:1px solid var(--line);background:rgba(88,214,255,.09);
+  color:var(--cyan);font-weight:900
+}
+h2{margin:0;font-size:1.55rem}
+.subtitle{color:var(--muted);margin:2px 0 0}
+.scenario{
+  background:#081624;border-left:4px solid var(--cyan);
+  border-radius:9px;padding:16px 17px;margin:15px 0
+}
+.task{
+  border:1px solid #315a77;border-radius:12px;padding:16px;margin-top:14px;
+  background:rgba(6,16,27,.5)
+}
+.task strong{color:var(--green)}
+ol{padding-left:22px;margin-bottom:0}
+li{margin:8px 0}
+.note{
+  background:rgba(255,209,102,.08);
+  border-left:4px solid var(--yellow);
+  padding:13px 15px;border-radius:9px;margin-top:16px
+}
+table{width:100%;border-collapse:collapse;margin:14px 0}
+th,td{border:1px solid #315a77;padding:10px;text-align:left}
+th{background:#13283b}
+td{background:#091725}
+.draw{
+  text-align:center;border-color:rgba(255,209,102,.35)
+}
+.draw button{
+  background:var(--yellow);color:#2b2207;border:0;border-radius:10px;
+  padding:12px 18px;font-size:1rem;font-weight:800;cursor:pointer
+}
+.result{
+  font-size:2.1rem;font-weight:900;color:var(--yellow);
+  margin:18px 0 5px;min-height:48px
+}
+.small{font-size:.9rem;color:var(--muted)}
+footer{text-align:center;color:var(--muted);padding-top:24px;font-size:.86rem}
+@media(max-width:760px){nav a{display:none}}
+</style>
+</head>
+<body>
+<header>
+<nav>
+  <div class="logo">BUSINESS <span>SYSTEMS INVESTIGATION</span></div>
+  <a href="#p1">Problema 1</a>
+  <a href="#p2">Problema 2</a>
+  <a href="#p3">Problema 3</a>
+  <a href="#p4">Problema 4</a>
+  <a href="#sorteggio">Sorteggio</a>
+</nav>
+</header>
+
+<main>
+<section class="hero">
+<div class="hero-inner">
+  <span class="tag">ATTIVITÀ DI ANALISI · LAVORO DI GRUPPO</span>
+  <h1>BUSINESS SYSTEMS INVESTIGATION</h1>
+  <p>
+    Analizzate i problemi proposti come consulenti di un'azienda.
+    Potete utilizzare <b>Gemini con l'account scolastico istituzionale</b>
+    per approfondire concetti non chiari, verificare ipotesi e confrontare possibili soluzioni.
+    Al termine due gruppi saranno sorteggiati e dovranno spiegare oralmente il proprio ragionamento alla cattedra,
+    senza utilizzare Gemini. <b>Questa attività costituisce anche una preparazione alle successive verifiche orali individuali:</b>
+    le interrogazioni seguiranno una modalità simile, con problemi e situazioni da analizzare e spiegare,
+    a cui si aggiungeranno <b>domande teoriche sugli argomenti studiati</b>.
+  </p>
+</div>
+</section>
+
+<section id="p1" class="card">
+  <div class="head">
+    <div class="num">1</div>
+    <div><h2>Dal dato alla decisione</h2><p class="subtitle">Riconoscete il passaggio da dati grezzi a una decisione aziendale.</p></div>
+  </div>
+
+  <div class="scenario">
+    La Direzione sta analizzando le vendite del prodotto <b>Notebook Pro 15</b>.
+  </div>
+
+  <table>
+    <thead><tr><th>Mese</th><th>Pezzi venduti</th></tr></thead>
+    <tbody>
+      <tr><td>Aprile</td><td>68</td></tr>
+      <tr><td>Maggio</td><td>75</td></tr>
+      <tr><td>Giugno</td><td>91</td></tr>
+      <tr><td>Luglio</td><td>118</td></tr>
+    </tbody>
+  </table>
+
+  <div class="task">
+    <strong>Analizzate le quattro affermazioni</strong>
+    <p><b>A.</b> «A luglio sono stati venduti 118 notebook.»</p>
+    <p><b>B.</b> «Le vendite sono aumentate in tutti i mesi considerati.»</p>
+    <p><b>C.</b> «Il Notebook Pro 15 sta registrando una crescita costante.»</p>
+    <p><b>D.</b> «L'azienda decide di aumentare le scorte del Notebook Pro 15.»</p>
+    <ol>
+      <li>Quali affermazioni rappresentano <b>dati</b>?</li>
+      <li>Quali rappresentano <b>informazioni ottenute elaborando o confrontando i dati</b>?</li>
+      <li>Dove interviene la <b>conoscenza</b>, cioè l'interpretazione delle informazioni?</li>
+      <li>Dove viene presa una <b>decisione</b>?</li>
+      <li>Motivate ogni scelta: non limitatevi ad associare un'etichetta alle quattro frasi.</li>
+    </ol>
+  </div>
+
+  <div class="task">
+    <strong>Un dato isolato è sufficiente?</strong>
+    <p>Il direttore vede soltanto il dato:</p>
+    <p style="font-size:1.15rem"><b>«118 notebook venduti a luglio.»</b></p>
+    <p>È sufficiente per concludere che le vendite stanno aumentando? Spiegate perché e indicate quali altri dati sono necessari per poter formulare questa informazione.</p>
+  </div>
+
+  <div class="task">
+    <strong>Costruite voi una nuova catena</strong>
+    <p>Utilizzando i dati della tabella, costruite un esempio diverso che mostri chiaramente il passaggio:</p>
+    <p style="text-align:center;font-size:1.08rem"><b>DATO → INFORMAZIONE → CONOSCENZA → DECISIONE</b></p>
+    <p>Dovete essere in grado di spiegare oralmente perché ogni passaggio appartiene al livello indicato.</p>
+  </div>
+</section>
+
+<section id="p2" class="card">
+  <div class="head">
+    <div class="num">2</div>
+    <div><h2>Il dato esiste, ma l'azienda sbaglia</h2><p class="subtitle">Archivi separati e informazioni non sincronizzate.</p></div>
+  </div>
+
+  <div class="scenario">
+    L'azienda utilizza file separati:
+    <b>Vendite</b> gestisce <code>clienti.xlsx</code>,
+    <b>Amministrazione</b> usa <code>anagrafica_clienti.xlsx</code>,
+    <b>Logistica</b> usa <code>spedizioni.xlsx</code>.
+    Un cliente cambia indirizzo. Vendite aggiorna il proprio file, ma gli altri uffici continuano a usare quello precedente.
+    Una spedizione viene inviata al vecchio indirizzo.
+  </div>
+
+  <div class="task">
+    <strong>Il problema</strong>
+    <ol>
+      <li>Il problema è che l'azienda non possiede il dato corretto? Spiegate.</li>
+      <li>Individuate almeno tre criticità nella gestione attuale.</li>
+      <li>Proponete una soluzione che permetta di aggiornare il dato una sola volta e renderlo disponibile a tutte le applicazioni che ne hanno bisogno.</li>
+      <li>Spiegate, usando questo caso, la differenza tra <b>sistema informativo</b> e <b>sistema informatico</b>.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="p3" class="card">
+  <div class="head">
+    <div class="num">3</div>
+    <div><h2>Quale soluzione informatica?</h2><p class="subtitle">Tecnologie diverse risolvono problemi diversi.</p></div>
+  </div>
+
+  <div class="scenario">
+    La stessa azienda presenta quattro esigenze differenti.
+  </div>
+
+  <div class="task">
+    <strong>Caso A</strong><br>
+    Vendite, Logistica, Produzione e Amministrazione utilizzano applicazioni diverse.
+    L'azienda vuole condividere dati comuni e coordinare le attività.
+  </div>
+
+  <div class="task">
+    <strong>Caso B</strong><br>
+    L'azienda vuole conoscere, per ogni cliente, ordini, offerte, comunicazioni, reclami e assistenza ricevuta.
+  </div>
+
+  <div class="task">
+    <strong>Caso C</strong><br>
+    La Direzione vuole confrontare dati provenienti da vendite, costi e produzione per decidere se lanciare un nuovo prodotto.
+  </div>
+
+  <div class="task">
+    <strong>Caso D</strong><br>
+    L'azienda possiede milioni di dati sugli acquisti e vuole individuare associazioni e comportamenti ricorrenti non immediatamente visibili.
+  </div>
+
+  <div class="note">
+    Per ciascun caso individuate una possibile soluzione informatica, spiegate come funziona,
+    quali dati utilizza e perché è adatta al problema. Non limitatevi a indicare una sigla.
+  </div>
+</section>
+
+<section id="p4" class="card">
+  <div class="head">
+    <div class="num">4</div>
+    <div><h2>Digitalizzare non significa solo usare il computer</h2><p class="subtitle">Documenti cartacei, duplicazioni e organizzazione del lavoro.</p></div>
+  </div>
+
+  <div class="scenario">
+    Ordini, fatture, contratti e documenti interni vengono ancora stampati,
+    firmati, archiviati in raccoglitori e successivamente ricercati manualmente.
+    Alcuni documenti vengono conservati anche in copie digitali non organizzate.
+    La Direzione vuole ridurre carta, duplicazioni e tempi di ricerca.
+  </div>
+
+  <div class="task">
+    <strong>Il problema</strong>
+    <ol>
+      <li>Quali problemi organizzativi e informativi può creare questa gestione?</li>
+      <li>Che cosa significa <b>dematerializzare</b> i documenti aziendali?</li>
+      <li>Quali vantaggi produrrebbe una gestione digitale organizzata?</li>
+      <li>Salvare i documenti come PDF in una cartella è sufficiente per parlare di dematerializzazione? Spiegate quali aspetti della gestione dei documenti devono essere organizzati affinché il sistema sia realmente utile all'azienda.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="sorteggio" class="card draw">
+  <div class="head" style="justify-content:center">
+    <div class="num">★</div>
+    <div style="text-align:left"><h2>Sorteggio alla cattedra</h2><p class="subtitle">Viene sorteggiato un gruppo.</p></div>
+  </div>
+
+  <p>
+    Tutti i gruppi devono essere pronti a spiegare i problemi affrontati e le soluzioni individuate.
+    Alla cattedra non è consentito utilizzare Gemini.
+  </p>
+
+  <button onclick="drawGroup()">SORTEGGIA IL GRUPPO</button>
+  <div class="result" id="result">—</div>
+  <div class="small">Il sorteggio sceglie casualmente due gruppi diversi tra Gruppo 1, Gruppo 2, Gruppo 3 e Gruppo 4.</div>
+</section>
+
+<footer>Business Systems Investigation · Processi aziendali e sistema informatico</footer>
+</main>
+
+<script>
+function drawGroup(){
+  const groups = [1,2,3,4];
+  for(let i = groups.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [groups[i], groups[j]] = [groups[j], groups[i]];
+  }
+  document.getElementById('result').textContent = 'GRUPPO ' + groups[0] + '  +  GRUPPO ' + groups[1];
+}
+</script>
+</body>
+</html>
